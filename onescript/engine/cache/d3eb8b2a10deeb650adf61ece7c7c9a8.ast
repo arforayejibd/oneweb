@@ -1,4 +1,4 @@
-a:13:{i:0;a:2:{s:4:"type";s:11:"IncludeNode";s:4:"file";s:6:"header";}i:1;a:2:{s:4:"type";s:8:"TextNode";s:5:"value";s:4414:"<div class="container">
+a:13:{i:0;a:2:{s:4:"type";s:11:"IncludeNode";s:4:"file";s:6:"header";}i:1;a:2:{s:4:"type";s:8:"TextNode";s:5:"value";s:4406:"<div class="container">
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-badge">
@@ -15,10 +15,10 @@ a:13:{i:0;a:2:{s:4:"type";s:11:"IncludeNode";s:4:"file";s:6:"header";}i:1;a:2:{s
         </p>
 
         <div class="hero-buttons">
-            <a href="/docs.one" class="btn btn-primary">
+            <a href="/docs" class="btn btn-primary">
                 <i class="fa-solid fa-book-open"></i> Read Documentation
             </a>
-            <a href="/products.one" class="btn btn-secondary">
+            <a href="/products" class="btn btn-secondary">
                 <i class="fa-solid fa-laptop-code"></i> Live Showcase App
             </a>
         </div>
@@ -88,7 +88,7 @@ a:13:{i:0;a:2:{s:4:"type";s:11:"IncludeNode";s:4:"file";s:6:"header";}i:1;a:2:{s
 <span style="color: #c084fc; font-weight: bold;">@endforeach</span>
 
 <span style="color: #64748b;">&lt;!-- 2. Declarative Zero-Backend Form Save --&gt;</span>
-&lt;<span class="color: #f43f5e;">form</span> <span style="color: #c084fc; font-weight: bold;">@insert</span>=<span style="color: #a3e635;">"contacts"</span> <span style="color: #38bdf8;">fields</span>=<span style="color: #a3e635;">"name,email,message"</span>&gt;
+&lt;<span style="color: #f43f5e;">form</span> <span style="color: #c084fc; font-weight: bold;">@insert</span>=<span style="color: #a3e635;">"contacts"</span> <span style="color: #38bdf8;">fields</span>=<span style="color: #a3e635;">"name,email,message"</span>&gt;
     &lt;<span style="color: #f43f5e;">input</span> <span style="color: #38bdf8;">name</span>=<span class="color: #a3e635;">"name"</span> <span style="color: #38bdf8;">placeholder</span>=<span style="color: #a3e635;">"Your Name"</span>&gt;
     &lt;<span style="color: #f43f5e;">button</span> <span style="color: #38bdf8;">type</span>=<span class="color: #a3e635;">"submit"</span>&gt;Save Message&lt;/<span class="color: #f43f5e;">button</span>&gt;
 &lt;/<span class="color: #f43f5e;">form</span>&gt;
@@ -102,7 +102,7 @@ a:13:{i:0;a:2:{s:4:"type";s:11:"IncludeNode";s:4:"file";s:6:"header";}i:1;a:2:{s
             Submit Feedback or Question (Powered by OneScript @insert)
         </h2>
 
-        ";}i:6;a:6:{s:4:"type";s:8:"FormNode";s:10:"actionType";s:6:"insert";s:5:"table";s:8:"contacts";s:5:"where";N;s:8:"redirect";N;s:5:"extra";s:50:" fields="name,email,message" redirect="/index.one"";}i:7;a:2:{s:4:"type";s:8:"TextNode";s:5:"value";s:1338:"
+        ";}i:6;a:6:{s:4:"type";s:8:"FormNode";s:10:"actionType";s:6:"insert";s:5:"table";s:8:"contacts";s:5:"where";N;s:8:"redirect";N;s:5:"extra";s:41:" fields="name,email,message" redirect="/"";}i:7;a:2:{s:4:"type";s:8:"TextNode";s:5:"value";s:1338:"
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="form-group">
                     <label>Your Name</label>

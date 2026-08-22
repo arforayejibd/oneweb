@@ -27,9 +27,9 @@
             </a>
             <ul class="nav-links">
                 <li><a href="/"><i class="fa-solid fa-house"></i> Home</a></li>
-                <li><a href="/docs.one"><i class="fa-solid fa-book-open"></i> Documentation</a></li>
-                <li><a href="/products.one"><i class="fa-solid fa-box"></i> Demo App</a></li>
-                <li><a href="/docs.one#quickstart" class="btn-header"><i class="fa-solid fa-rocket"></i> Get Started</a></li>
+                <li><a href="/docs"><i class="fa-solid fa-book-open"></i> Documentation</a></li>
+                <li><a href="/products"><i class="fa-solid fa-box"></i> Demo App</a></li>
+                <li><a href="/docs#quickstart" class="btn-header"><i class="fa-solid fa-rocket"></i> Get Started</a></li>
             </ul>
         </div>
     </nav>

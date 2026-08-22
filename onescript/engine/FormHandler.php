@@ -43,7 +43,12 @@ class FormHandler {
                 break;
         }
 
-        // Redirect user cleanly after action
+        // Normalize clean redirect URL (remove .one extension from redirect URL)
+        $redirect = preg_replace('/\.one$/i', '', $redirect);
+        if ($redirect === '/index') {
+            $redirect = '/';
+        }
+
         header("Location: " . $redirect);
         exit;
     }

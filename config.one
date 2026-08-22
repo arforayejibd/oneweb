@@ -1,9 +1,41 @@
+# OneScript Master Configuration File (.one)
+
+# ------------------------------------------------------------------
+# 1. Database Configuration (@db ... @enddb)
+# ------------------------------------------------------------------
 @db
-    driver = "mysql"
-    host = "127.0.0.1"
-    port = 3306
-    dbname = "onescript_db"
+    driver   = "mysql"
+    host     = "127.0.0.1"
+    port     = 3306
+    dbname   = "onescript_db"
     username = "root"
     password = ""
-    charset = "utf8mb4"
+    charset  = "utf8mb4"
 @enddb
+
+# ------------------------------------------------------------------
+# 2. Application Global Settings (@app ... @endapp)
+# ------------------------------------------------------------------
+@app
+    name     = "OneScript Official Web Portal"
+    env      = "development"
+    debug    = true
+    url      = "http://onescript.test"
+    timezone = "Asia/Dhaka"
+@endapp
+
+# ------------------------------------------------------------------
+# 3. Performance & AST Caching Control (@cache ... @endcache)
+# ------------------------------------------------------------------
+@cache
+    enabled  = true
+    lifetime = 3600
+@endcache
+
+# ------------------------------------------------------------------
+# 4. Security System Control (@security ... @endsecurity)
+# ------------------------------------------------------------------
+@security
+    auto_escape = true
+    csrf_token  = true
+@endsecurity

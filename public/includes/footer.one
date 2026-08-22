@@ -14,8 +14,8 @@
                 <h4 class="footer-title">Quick Links</h4>
                 <ul class="footer-links-list">
                     <li><a href="/">Home Landing Page</a></li>
-                    <li><a href="/docs.one">Official Documentation</a></li>
-                    <li><a href="/products.one">Demo Showcase App</a></li>
+                    <li><a href="/docs">Official Documentation</a></li>
+                    <li><a href="/products">Demo Showcase App</a></li>
                 </ul>
             </div>
             <div>

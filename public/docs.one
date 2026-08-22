@@ -128,7 +128,7 @@ password = <span class="code-val">"secret"</span>
 <span class="code-directive">@endforeach</span>
 
 <span class="code-comment">&lt;!-- 2. Zero-Backend Form Submission --&gt;</span>
-&lt;<span class="code-tag">form</span> <span class="code-directive">@insert</span>=<span class="code-val">"products"</span> <span class="code-attr">fields</span>=<span class="code-val">"name,price"</span> <span class="code-attr">redirect</span>=<span class="code-val">"/index.one"</span>&gt;
+&lt;<span class="code-tag">form</span> <span class="code-directive">@insert</span>=<span class="code-val">"products"</span> <span class="code-attr">fields</span>=<span class="code-val">"name,price"</span> <span class="code-attr">redirect</span>=<span class="code-val">"/"</span>&gt;
 &lt;<span class="code-tag">input</span> <span class="code-attr">name</span>=<span class="code-val">"name"</span> <span class="code-attr">placeholder</span>=<span class="code-val">"Product Name"</span> <span class="code-attr">required</span>&gt;
 &lt;<span class="code-tag">input</span> <span class="code-attr">name</span>=<span class="code-val">"price"</span> <span class="code-attr">placeholder</span>=<span class="code-val">"Price"</span> <span class="code-attr">required</span>&gt;
 &lt;<span class="code-tag">button</span> <span class="code-attr">type</span>=<span class="code-val">"submit"</span>&gt;Save Product&lt;/<span class="code-tag">button</span>&gt;
@@ -154,9 +154,9 @@ password = <span class="code-val">"secret"</span>
                 <div class="code-block">
 my-website/
 ├── <span class="code-val">public/</span>                   <span class="code-comment">&lt;-- All developer templates (.one), CSS, JS, images</span>
-│   ├── index.one             <span class="code-comment">&lt;-- Homepage template</span>
-│   ├── products.one          <span class="code-comment">&lt;-- Product listing template</span>
-│   ├── docs.one              <span class="code-comment">&lt;-- Documentation Page</span>
+│   ├── index.one             <span class="code-comment">&lt;-- Homepage template (URL: /)</span>
+│   ├── products.one          <span class="code-comment">&lt;-- Product listing (URL: /products)</span>
+│   ├── docs.one              <span class="code-comment">&lt;-- Documentation Page (URL: /docs)</span>
 │   ├── includes/             <span class="code-comment">&lt;-- Header & Footer Components</span>
 │   ├── css/                  <span class="code-comment">&lt;-- Stylesheets</span>
 │   └── images/               <span class="code-comment">&lt;-- Image Assets</span>
@@ -290,7 +290,7 @@ my-website/
                 </div>
                 <div class="code-block">
 <span class="code-comment">&lt;!-- Insert Form with Mass Assignment Protection --&gt;</span>
-&lt;<span class="code-tag">form</span> <span class="code-directive">@insert</span>=<span class="code-val">"contacts"</span> <span class="code-attr">fields</span>=<span class="code-val">"name,email,message"</span> <span class="code-attr">redirect</span>=<span class="code-val">"/index.one"</span>&gt;
+&lt;<span class="code-tag">form</span> <span class="code-directive">@insert</span>=<span class="code-val">"contacts"</span> <span class="code-attr">fields</span>=<span class="code-val">"name,email,message"</span> <span class="code-attr">redirect</span>=<span class="code-val">"/"</span>&gt;
     &lt;<span class="code-tag">input</span> <span class="code-attr">name</span>=<span class="code-val">"name"</span> <span class="code-attr">placeholder</span>=<span class="code-val">"Name"</span> <span class="code-attr">required</span>&gt;
     &lt;<span class="code-tag">input</span> <span class="code-attr">name</span>=<span class="code-val">"email"</span> <span class="code-attr">placeholder</span>=<span class="code-val">"Email"</span> <span class="code-attr">required</span>&gt;
     &lt;<span class="code-tag">textarea</span> <span class="code-attr">name</span>=<span class="code-val">"message"</span> <span class="code-attr">placeholder</span>=<span class="code-val">"Message"</span>&gt;&lt;/<span class="code-tag">textarea</span>&gt;
@@ -298,7 +298,7 @@ my-website/
 &lt;/<span class="code-tag">form</span>&gt;
 
 <span class="code-comment">&lt;!-- Delete Form --&gt;</span>
-&lt;<span class="code-tag">form</span> <span class="code-directive">@delete</span>=<span class="code-val">"contacts"</span> <span class="code-attr">where</span>=<span class="code-val">"id = {{ contact.id }}"</span> <span class="code-attr">redirect</span>=<span class="code-val">"/index.one"</span>&gt;
+&lt;<span class="code-tag">form</span> <span class="code-directive">@delete</span>=<span class="code-val">"contacts"</span> <span class="code-attr">where</span>=<span class="code-val">"id = {{ contact.id }}"</span> <span class="code-attr">redirect</span>=<span class="code-val">"/"</span>&gt;
     &lt;<span class="code-tag">button</span> <span class="code-attr">type</span>=<span class="code-val">"submit"</span>&gt;Delete Contact&lt;/<span class="code-tag">button</span>&gt;
 &lt;/<span class="code-tag">form</span>&gt;
                 </div>
@@ -380,7 +380,7 @@ my-website/
         &lt;<span class="code-tag">p</span>&gt;Price: ${{ product.price }}&lt;/<span class="code-tag">p</span>&gt;
 
         <span class="code-comment">&lt;!-- Instant Order Form --&gt;</span>
-        &lt;<span class="code-tag">form</span> <span class="code-directive">@insert</span>=<span class="code-val">"orders"</span> <span class="code-attr">fields</span>=<span class="code-val">"product_id,customer_name,phone,address"</span> <span class="code-attr">redirect</span>=<span class="code-val">"/success.one"</span>&gt;
+        &lt;<span class="code-tag">form</span> <span class="code-directive">@insert</span>=<span class="code-val">"orders"</span> <span class="code-attr">fields</span>=<span class="code-val">"product_id,customer_name,phone,address"</span> <span class="code-attr">redirect</span>=<span class="code-val">"/success"</span>&gt;
             &lt;<span class="code-tag">input</span> <span class="code-attr">type</span>=<span class="code-val">"hidden"</span> <span class="code-attr">name</span>=<span class="code-val">"product_id"</span> <span class="code-attr">value</span>=<span class="code-val">"{{ product.id }}"</span>&gt;
             &lt;<span class="code-tag">input</span> <span class="code-attr">name</span>=<span class="code-val">"customer_name"</span> <span class="code-attr">placeholder</span>=<span class="code-val">"Your Name"</span> <span class="code-attr">required</span>&gt;
             &lt;<span class="code-tag">input</span> <span class="code-attr">name</span>=<span class="code-val">"phone"</span> <span class="code-attr">placeholder</span>=<span class="code-val">"Phone Number"</span> <span class="code-attr">required</span>&gt;

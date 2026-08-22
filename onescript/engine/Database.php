@@ -70,13 +70,21 @@ class Database {
     public static function loadConfigFromOneFile(): array {
         $configPath = __DIR__ . '/../../config.one';
         $default = [
-            'driver'   => 'mysql',
-            'host'     => '127.0.0.1',
-            'port'     => 3306,
-            'dbname'   => 'onescript_db',
-            'username' => 'root',
-            'password' => '',
-            'charset'  => 'utf8mb4',
+            'driver'      => 'mysql',
+            'host'        => '127.0.0.1',
+            'port'        => 3306,
+            'dbname'      => 'onescript_db',
+            'username'    => 'root',
+            'password'    => '',
+            'charset'     => 'utf8mb4',
+            'name'        => 'OneScript Portal',
+            'env'         => 'development',
+            'debug'       => true,
+            'url'         => 'http://onescript.test',
+            'timezone'    => 'Asia/Dhaka',
+            'enabled'     => true,
+            'lifetime'    => 3600,
+            'auto_escape' => true,
         ];
 
         if (file_exists($configPath)) {
@@ -85,7 +93,9 @@ class Database {
                 foreach ($matches as $m) {
                     $key = strtolower(trim($m[1]));
                     $val = trim($m[2]);
-                    if ($key === 'port') $val = (int)$val;
+                    if (strtolower($val) === 'true') $val = true;
+                    if (strtolower($val) === 'false') $val = false;
+                    if ($key === 'port' || $key === 'lifetime') $val = (int)$val;
                     $default[$key] = $val;
                 }
             }

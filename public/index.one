@@ -17,10 +17,10 @@
         </p>
 
         <div class="hero-buttons">
-            <a href="/docs.one" class="btn btn-primary">
+            <a href="/docs" class="btn btn-primary">
                 <i class="fa-solid fa-book-open"></i> Read Documentation
             </a>
-            <a href="/products.one" class="btn btn-secondary">
+            <a href="/products" class="btn btn-secondary">
                 <i class="fa-solid fa-laptop-code"></i> Live Showcase App
             </a>
         </div>
@@ -90,7 +90,7 @@
 <span style="color: #c084fc; font-weight: bold;">@endforeach</span>
 
 <span style="color: #64748b;">&lt;!-- 2. Declarative Zero-Backend Form Save --&gt;</span>
-&lt;<span class="color: #f43f5e;">form</span> <span style="color: #c084fc; font-weight: bold;">@insert</span>=<span style="color: #a3e635;">"contacts"</span> <span style="color: #38bdf8;">fields</span>=<span style="color: #a3e635;">"name,email,message"</span>&gt;
+&lt;<span style="color: #f43f5e;">form</span> <span style="color: #c084fc; font-weight: bold;">@insert</span>=<span style="color: #a3e635;">"contacts"</span> <span style="color: #38bdf8;">fields</span>=<span style="color: #a3e635;">"name,email,message"</span>&gt;
     &lt;<span style="color: #f43f5e;">input</span> <span style="color: #38bdf8;">name</span>=<span class="color: #a3e635;">"name"</span> <span style="color: #38bdf8;">placeholder</span>=<span style="color: #a3e635;">"Your Name"</span>&gt;
     &lt;<span style="color: #f43f5e;">button</span> <span style="color: #38bdf8;">type</span>=<span class="color: #a3e635;">"submit"</span>&gt;Save Message&lt;/<span class="color: #f43f5e;">button</span>&gt;
 &lt;/<span class="color: #f43f5e;">form</span>&gt;
@@ -104,7 +104,7 @@
             Submit Feedback or Question (Powered by OneScript @insert)
         </h2>
 
-        <form @insert="contacts" fields="name,email,message" redirect="/index.one">
+        <form @insert="contacts" fields="name,email,message" redirect="/">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="form-group">
                     <label>Your Name</label>
