@@ -5,7 +5,7 @@
 # GitHub Linguist Language Override Settings
 # ------------------------------------------------------------------
 
-# 1. Treat .one template files as the main language/markup of the repository
+# 1. Map .one template files to HTML/OneScript syntax
 *.one linguist-language=HTML
 *.one linguist-detectable=true
 

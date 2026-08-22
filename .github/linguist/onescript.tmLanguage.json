@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "OneScript",
+  "scopeName": "text.html.onescript",
+  "patterns": [
+    {
+      "name": "comment.block.onescript",
+      "begin": "<!--",
+      "end": "-->"
+    },
+    {
+      "name": "keyword.control.onescript",
+      "match": "@(query|endquery|foreach|endforeach|if|elseif|else|endif|include|db|enddb|app|endapp|cache|endcache|security|endsecurity)\\b"
+    },
+    {
+      "name": "entity.other.attribute-name.onescript",
+      "match": "@(insert|update|delete)\\b"
+    },
+    {
+      "name": "variable.other.readwrite.onescript",
+      "begin": "\\{\\{",
+      "end": "\\}\\}",
+      "patterns": [
+        {
+          "name": "variable.parameter.onescript",
+          "match": "[a-zA-Z0-9_\\.]+"
+        }
+      ]
+    },
+    {
+      "name": "markup.raw.onescript",
+      "begin": "\\{!\\!",
+      "end": "\\!\\!\\}"
+    }
+  ]
+}
