@@ -2,13 +2,13 @@
 * text=auto
 
 # ------------------------------------------------------------------
-# GitHub Linguist Language Override Settings
+# GitHub Linguist Custom Language Override Settings
 # ------------------------------------------------------------------
 
-# 1. Treat .one files as the primary language/markup of this repository
-*.one linguist-language=HTML
+# 1. Classify .one files strictly as OneScript language
+*.one linguist-language=OneScript
 *.one linguist-detectable=true
 
-# 2. Treat core engine PHP runtime files as internal framework vendor code
+# 2. Treat core PHP engine files as internal framework vendor code
 onescript/** linguist-vendored
 tests/** linguist-vendored
