@@ -1,0 +1,15 @@
+# OneScript Routing Engine for Shared Hosting (cPanel / Apache)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Serve existing static assets if present
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Route all requests to hidden OneScript engine
+    RewriteRule ^(.*)$ onescript/engine/boot.php [QSA,L]
+</IfModule>
+
+# Map .one files MIME type
+AddType text/html .one

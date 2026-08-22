@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneScript - HTML-First Web Programming Language</title>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- External Clean Stylesheets -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/docs.css">
+</head>
+<body>
+
+    <!-- Standardized Global Header Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <i class="fa-solid fa-code" style="color: var(--accent);"></i>
+                OneScript <span class="logo-badge">v0.1</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="/docs.one"><i class="fa-solid fa-book-open"></i> Documentation</a></li>
+                <li><a href="/products.one"><i class="fa-solid fa-box"></i> Demo App</a></li>
+                <li><a href="/docs.one#quickstart" class="btn-header"><i class="fa-solid fa-rocket"></i> Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
