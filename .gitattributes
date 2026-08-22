@@ -1,2 +1,14 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# ------------------------------------------------------------------
+# GitHub Linguist Language Override Settings
+# ------------------------------------------------------------------
+
+# 1. Treat .one files as the primary language/markup of this repository
+*.one linguist-language=HTML
+*.one linguist-detectable=true
+
+# 2. Treat core engine PHP runtime files as internal framework vendor code
+onescript/** linguist-vendored
+tests/** linguist-vendored
