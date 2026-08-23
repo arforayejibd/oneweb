@@ -216,6 +216,41 @@ class Database {
             return "`{$field}` {$op} {$paramKey}";
         }, $where);
 
+        // Security validation: ensure no SQL injection payload remains
+        if (!empty($result)) {
+            $normalized = str_replace(['(', ')'], [' ( ', ' ) '], $result);
+            $tokens = preg_split('/\s+/', trim($normalized));
+            
+            $allowedKeywords = ['AND', 'OR', 'LIKE', 'NOT', 'IS', 'NULL', 'IN', 'BETWEEN', '=', '!=', '>', '<', '>=', '<=', '<=', '<>', '(', ')'];
+            
+            foreach ($tokens as $token) {
+                if ($token === '') continue;
+                
+                // 1. Check if placeholder
+                if (preg_match('/^:[a-zA-Z0-9_]+$/', $token)) {
+                    continue;
+                }
+                
+                // 2. Check if backticked field name
+                if (preg_match('/^`[a-zA-Z0-9_]+`$/', $token)) {
+                    continue;
+                }
+                
+                // 3. Check if number
+                if (is_numeric($token)) {
+                    continue;
+                }
+                
+                // 4. Check if allowed keyword/operator
+                if (in_array(strtoupper($token), $allowedKeywords)) {
+                    continue;
+                }
+                
+                // Reject query to prevent SQL Injection
+                throw new \Exception("Security Violation: Unsafe SQL token detected in WHERE clause: " . htmlspecialchars($token));
+            }
+        }
+
         return $result ?: $where;
     }
 

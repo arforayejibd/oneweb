@@ -82,12 +82,15 @@ class Renderer {
                     $redirect = !empty($node['redirect']) ? $this->evaluateStringWithContext($node['redirect'], $context) : ($_SERVER['REQUEST_URI'] ?? '/');
                     $extra = $node['extra'] ?? '';
 
+                    $signature = FormHandler::generateSignature($actionType, $table, $where);
+
                     $html .= "<form method=\"POST\" action=\"\" {$extra}>\n";
                     $html .= "  <input type=\"hidden\" name=\"_onescript_action\" value=\"" . htmlspecialchars($actionType) . "\">\n";
                     $html .= "  <input type=\"hidden\" name=\"_onescript_table\" value=\"" . htmlspecialchars($table) . "\">\n";
                     if ($where !== '') {
                         $html .= "  <input type=\"hidden\" name=\"_onescript_where\" value=\"" . htmlspecialchars($where) . "\">\n";
                     }
+                    $html .= "  <input type=\"hidden\" name=\"_onescript_signature\" value=\"" . htmlspecialchars($signature) . "\">\n";
                     $html .= "  <input type=\"hidden\" name=\"_onescript_redirect\" value=\"" . htmlspecialchars($redirect) . "\">\n";
                     break;
 
