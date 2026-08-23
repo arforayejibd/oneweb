@@ -1,52 +1,65 @@
 @include "header"
 
-<div class="container" style="padding-top: 2.5rem;">
-    <div class="card-header-flex" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);">
-        <h1 style="font-size: 1.4rem; font-weight: 800; color: white; display: flex; align-items: center; gap: 0.6rem;">
-            <i class="fa-solid fa-boxes-stacked" style="color: var(--accent);"></i>
-            Product Management Showcase Table
-        </h1>
-        <a href="/" class="btn btn-header">
-            <i class="fa-solid fa-arrow-left"></i> Back to Home
-        </a>
-    </div>
+<one-container max-width="7xl">
+    <div class="py-12 relative z-10">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
+            <div>
+                <one-heading level="1">Product Showcase Application</one-heading>
+                <p class="text-slate-400 text-sm">Demonstrating OneScript dynamic <code>@query</code>, <code>@foreach</code>, and zero-code <code>@insert</code> / <code>@delete</code> database operations.</p>
+            </div>
+            <one-badge variant="purple">Live Storefront Demo</one-badge>
+        </div>
 
-    <!-- Query all products -->
-    @query products order by id desc
-    @endquery
+        <!-- Add New Product Form using OneScript @insert -->
+        <div class="glass-card rounded-3xl p-8 mb-14 border border-slate-800 shadow-2xl">
+            <div class="max-w-2xl mb-6">
+                <one-heading level="3">Add New Product (@insert="products")</one-heading>
+                <p class="text-slate-400 text-xs">Submitting this form executes a parameterized PDO INSERT directly into SQLite/MySQL without writing backend PHP files.</p>
+            </div>
 
-    <div class="step-card" style="padding: 0; overflow: hidden; margin-top: 1.5rem;">
-        <table class="doc-table" style="margin: 0; border: none;">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Description</th>
-                    <th style="text-align: right;">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach products as product
-                    <tr>
-                        <td style="font-weight: 700; color: var(--text-muted);">#{{ product.id }}</td>
-                        <td style="font-weight: 700; color: white;">{{ product.name }}</td>
-                        <td><span class="logo-badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent); shadow: none;">{{ product.category }}</span></td>
-                        <td><span style="font-size: 1.1rem; font-weight: 800; color: var(--success);">${{ product.price }}</span></td>
-                        <td style="color: var(--text-muted); font-size: 0.92rem;">{{ product.description }}</td>
-                        <td style="text-align: right;">
-                            <form @delete="products" where="id = {{ product.id }}" redirect="/products">
-                                <button type="submit" class="btn" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.4rem 0.9rem; font-size: 0.85rem;">
-                                    <i class="fa-solid fa-trash"></i> Delete (@delete)
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+            <form @insert="products" redirect="/products">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <one-input name="name" label="Product Name" placeholder="e.g. Wireless Headphones" required />
+                    <one-input name="price" label="Price (৳)" placeholder="e.g. 3500" required />
+                </div>
+                <one-input name="description" label="Description" placeholder="Short product description..." required />
+
+                <div class="mt-4">
+                    <one-button type="submit" variant="primary">
+                        <i class="fa-solid fa-plus mr-1"></i> Add Product
+                    </one-button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Fetch & Display Products using OneScript @query & @foreach -->
+        <div class="mb-8 flex items-center justify-between border-t border-slate-800/80 pt-10">
+            <div>
+                <one-heading level="2">Available Catalog (@query products)</one-heading>
+                <p class="text-slate-400 text-xs">Real-time database feed rendered by OneScript engine</p>
+            </div>
+            <one-badge variant="info">Live Feed</one-badge>
+        </div>
+
+        @query products from products order by id desc
+        @endquery
+
+        <one-grid cols="3" gap="6">
+            @foreach products as product
+                <one-card title="{{ product.name }}" price="৳{{ product.price }}" badge="In Stock" badge-variant="success">
+                    <p>{{ product.description }}</p>
+
+                    <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <form @delete="products" where="id = {{ product.id }}" redirect="/products">
+                            <one-button type="submit" variant="danger">
+                                <i class="fa-solid fa-trash-can mr-1"></i> Delete (@delete)
+                            </one-button>
+                        </form>
+                    </div>
+                </one-card>
+            @endforeach
+        </one-grid>
     </div>
-</div>
+</one-container>
 
 @include "footer"

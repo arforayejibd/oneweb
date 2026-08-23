@@ -88,4 +88,43 @@
 @section "content"
     <h1>Dashboard Page</h1>
 @endsection
+
+---
+
+## 7. Unified UI Components (`<one-*>`)
+
+OneScript strictly separates concerns: `@directives` for logic/data, and `<one-*>` tags for UI layout and styling (powered natively by Tailwind CSS).
+
+### Available UI Component Tags:
+
+```html
+<!-- Container -->
+<one-container max-width="7xl">
+
+    <!-- Responsive Grid -->
+    <one-grid cols="3" gap="6">
+
+        <!-- Card with Badge, Title, Price -->
+        <one-card title="Smart Watch" price="৳2,500" badge="Electronics" badge-variant="purple">
+            <p>High performance smartwatch with heart monitor.</p>
+
+            <!-- Styled Button -->
+            <one-button href="/buy" variant="primary">
+                Buy Now
+            </one-button>
+        </one-card>
+
+    </one-grid>
+
+    <!-- Alerts -->
+    <one-alert type="success">Operation completed successfully!</one-alert>
+
+    <!-- Badges -->
+    <one-badge variant="warning">Pending</one-badge>
+
+    <!-- Form Input -->
+    <one-input name="price" label="Product Price" type="number" placeholder="Enter amount" required />
+
+</one-container>
+```
 ```

@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Block direct HTTP access to raw .one source files, .json, and .sqlite files
+    <FilesMatch "\.(one|json|sqlite|db)$">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+
+    # Redirect all requests to index.php or boot.php if file/directory does not exist
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
+</IfModule>

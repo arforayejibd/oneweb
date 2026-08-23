@@ -63,6 +63,9 @@ FormDirectiveNode ::= "<form" ( "@insert" | "@update" | "@delete" ) "=" StringLi
 | `T_FORM_INSERT` | `<form @insert="table" fields="..." validate="...">` |
 | `T_FORM_UPDATE` | `<form @update="table" where="..." fields="..." validate="...">` |
 | `T_FORM_DELETE` | `<form @delete="table" where="...">` or `<button @delete="table" where="...">` |
+| `T_ONE_COMPONENT_START` | `<one-<component> [attr="val"...]>` (UI Element Start) |
+| `T_ONE_COMPONENT_END` | `</one-<component>>` (UI Element End) |
+| `T_ONE_COMPONENT_SELF` | `<one-<component> [attr="val"...] />` (Self-Closing UI Element) |
 
 ---
 
@@ -79,5 +82,6 @@ DocumentNode
  ├── LayoutNode (template)
  ├── SectionNode (name, children)
  ├── YieldNode (name)
- └── FormNode (actionType, table, where, fields, validate, redirect)
+ ├── FormNode (actionType, table, where, fields, validate, redirect)
+ └── ComponentNode (name, attributes, children)
 ```

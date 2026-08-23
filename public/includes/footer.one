@@ -1,34 +1,47 @@
-    <!-- Standardized Global Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-column-wide">
-                <div class="logo" style="margin-bottom: 1rem;">
-                    <i class="fa-solid fa-code" style="color: var(--accent);"></i>
-                    OneScript <span class="logo-badge">.one</span>
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="relative z-10 border-t border-slate-800/80 bg-[#090d16]/95 backdrop-blur-xl text-slate-400 py-12 md:py-16 mt-20 overflow-hidden w-full">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-600/30">
+                            <i class="fa-solid fa-code text-sm"></i>
+                        </span>
+                        <span class="text-xl font-bold text-white tracking-tight">OneScript</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">
+                        HTML-First Web Programming Language Engine. Empowering developers to query databases and save forms using pure HTML tags with zero backend boilerplate code.
+                    </p>
                 </div>
-                <p class="footer-text">
-                    HTML-First Server-Side Web Programming Language. Build dynamic database-driven applications directly inside HTML without writing complex backend boilerplate code.
-                </p>
+
+                <div>
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Quick Navigation</h4>
+                    <ul class="space-y-2.5 text-xs sm:text-sm">
+                        <li><a href="/" class="hover:text-indigo-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] text-indigo-500"></i> Home</a></li>
+                        <li><a href="/tutorial" class="hover:text-indigo-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] text-indigo-500"></i> Step-by-Step Tutorial</a></li>
+                        <li><a href="/docs" class="hover:text-indigo-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] text-indigo-500"></i> Documentation</a></li>
+                        <li><a href="/products" class="hover:text-indigo-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[10px] text-indigo-500"></i> Live Demo Application</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Engine Specifications</h4>
+                    <ul class="space-y-2.5 text-xs sm:text-sm">
+                        <li class="flex items-center gap-2.5 text-slate-300"><i class="fa-solid fa-circle-check text-emerald-400 text-xs"></i> Pure HTML-First Directive Grammar</li>
+                        <li class="flex items-center gap-2.5 text-slate-300"><i class="fa-solid fa-circle-check text-emerald-400 text-xs"></i> MySQL / MariaDB / SQLite PDO Engine</li>
+                        <li class="flex items-center gap-2.5 text-slate-300"><i class="fa-solid fa-bolt text-amber-400 text-xs"></i> AST Compiled Template Caching (1-2ms)</li>
+                    </ul>
+                </div>
             </div>
-            <div>
-                <h4 class="footer-title">Quick Links</h4>
-                <ul class="footer-links-list">
-                    <li><a href="/">Home Landing Page</a></li>
-                    <li><a href="/docs">Official Documentation</a></li>
-                    <li><a href="/products">Demo Showcase App</a></li>
-                </ul>
+
+            <div class="border-t border-slate-800/80 mt-10 md:mt-12 pt-6 md:pt-8 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <span class="text-[11px] sm:text-xs">© 2026 OneScript Language Engine. Built with pure HTML-First principles.</span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400 text-[11px] sm:text-xs">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Engine Active (v0.1)
+                </span>
             </div>
-            <div>
-                <h4 class="footer-title">Hosting Compatibility</h4>
-                <p class="footer-text" style="font-size: 0.9rem;">
-                    <i class="fa-solid fa-server" style="color: var(--success);"></i> cPanel & Shared Hosting Ready<br>
-                    <i class="fa-solid fa-check" style="color: var(--success);"></i> MySQL / MariaDB / SQLite Supported<br>
-                    <i class="fa-solid fa-bolt" style="color: var(--warning);"></i> AST Compiled Template Caching
-                </p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            © 2026 OneScript Language Engine. Powered by OneScript (.one).
         </div>
     </footer>
 </body>

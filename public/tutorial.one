@@ -1,0 +1,166 @@
+@include "header"
+
+<one-container max-width="7xl">
+    <div class="py-12 relative z-10">
+        <!-- Page Header -->
+        <div class="mb-14 text-center max-w-4xl mx-auto">
+            <one-badge variant="success">Interactive Step-by-Step Tutorial v0.2</one-badge>
+            <div class="mt-4 mb-3">
+                <one-heading level="1">Building Dynamic Web Apps with OneScript</one-heading>
+            </div>
+            <p class="text-slate-400 text-base sm:text-lg leading-relaxed">
+                Learn how to build a full-stack, dynamic database web application from absolute scratch in 6 simple steps using pure HTML, validation rules, custom components, and OneScript directives.
+            </p>
+        </div>
+
+        <!-- Tutorial Timeline Wrapper -->
+        <div class="max-w-5xl mx-auto space-y-12">
+
+            <!-- Step 1 -->
+            <div class="glass-card rounded-3xl p-8 border border-slate-800 shadow-xl space-y-6">
+                <div class="flex items-center gap-4 border-b border-slate-800/80 pb-4">
+                    <span class="w-10 h-10 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-indigo-600/30">1</span>
+                    <div>
+                        <one-heading level="2">Step 1: Create Your First Template File (.one)</one-heading>
+                        <p class="text-xs text-slate-400">Setting up the template file and including partials</p>
+                    </div>
+                </div>
+
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Create a new file named <code>public/store.one</code> in your project folder. Every page in OneScript is an HTML file with the <code>.one</code> extension. To add a navigation header and footer, use the <code>&#64;include</code> directive:
+                </p>
+
+                <div class="bg-[#070a12] text-slate-300 rounded-2xl p-6 font-mono text-xs shadow-inner border border-slate-800 leading-relaxed">
+                    <span class="text-purple-400 font-bold">&#64;include</span> <span class="text-emerald-300">"header"</span><br><br>
+
+                    &lt;<span class="text-amber-400">one-container</span>&gt;<br>
+                    &nbsp;&nbsp;&lt;<span class="text-amber-400">one-heading</span> <span class="text-indigo-300">level</span>=<span class="text-emerald-300">"1"</span>&gt;Welcome to My Digital Store&lt;/<span class="text-amber-400">one-heading</span>&gt;<br>
+                    &nbsp;&nbsp;&lt;<span class="text-amber-400">p</span>&gt;This is my first dynamic web app built with OneScript.&lt;/<span class="text-amber-400">p</span>&gt;<br>
+                    &lt;/<span class="text-amber-400">one-container</span>&gt;<br><br>
+
+                    <span class="text-purple-400 font-bold">&#64;include</span> <span class="text-emerald-300">"footer"</span>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="glass-card rounded-3xl p-8 border border-slate-800 shadow-xl space-y-6">
+                <div class="flex items-center gap-4 border-b border-slate-800/80 pb-4">
+                    <span class="w-10 h-10 rounded-2xl bg-purple-600 text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-purple-600/30">2</span>
+                    <div>
+                        <one-heading level="2">Step 2: Add Form with Validation (&#64;insert & validate="...")</one-heading>
+                        <p class="text-xs text-slate-400">Saving input data to SQLite / MySQL with automatic input validation</p>
+                    </div>
+                </div>
+
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Annotate your form with <code>&#64;insert="products"</code> and <code>validate="name|required|min:3;price|required|numeric"</code>. The engine validates user payload before database insertion:
+                </p>
+
+                <div class="bg-[#070a12] text-slate-300 rounded-2xl p-6 font-mono text-xs shadow-inner border border-slate-800 leading-relaxed">
+                    &lt;<span class="text-rose-400">form</span> <span class="text-purple-400 font-bold">&#64;insert</span>=<span class="text-emerald-300">"products"</span> <span class="text-indigo-300">validate</span>=<span class="text-emerald-300">"name|required|min:3;price|required|numeric"</span> <span class="text-indigo-300">redirect</span>=<span class="text-emerald-300">"/store"</span>&gt;<br>
+                    &nbsp;&nbsp;&lt;<span class="text-amber-400">one-input</span> <span class="text-indigo-300">name</span>=<span class="text-emerald-300">"name"</span> <span class="text-indigo-300">label</span>=<span class="text-emerald-300">"Product Title"</span> <span class="text-indigo-300">placeholder</span>=<span class="text-emerald-300">"e.g. Mechanical Keyboard"</span> <span class="text-indigo-300">required</span> /&gt;<br>
+                    &nbsp;&nbsp;&lt;<span class="text-amber-400">one-input</span> <span class="text-indigo-300">name</span>=<span class="text-emerald-300">"price"</span> <span class="text-indigo-300">label</span>=<span class="text-emerald-300">"Price (৳)"</span> <span class="text-indigo-300">placeholder</span>=<span class="text-emerald-300">"e.g. 4500"</span> <span class="text-indigo-300">required</span> /&gt;<br>
+                    &nbsp;&nbsp;&lt;<span class="text-amber-400">one-button</span> <span class="text-indigo-300">type</span>=<span class="text-emerald-300">"submit"</span>&gt;Add Product&lt;/<span class="text-amber-400">one-button</span>&gt;<br>
+                    &lt;/<span class="text-rose-400">form</span>&gt;
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="glass-card rounded-3xl p-8 border border-slate-800 shadow-xl space-y-6">
+                <div class="flex items-center gap-4 border-b border-slate-800/80 pb-4">
+                    <span class="w-10 h-10 rounded-2xl bg-pink-600 text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-pink-600/30">3</span>
+                    <div>
+                        <one-heading level="2">Step 3: Fetch Records from Database (&#64;query)</one-heading>
+                        <p class="text-xs text-slate-400">Fetching records from SQLite / MySQL into template variables</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#070a12] text-slate-300 rounded-2xl p-6 font-mono text-xs shadow-inner border border-slate-800 leading-relaxed">
+                    <span class="text-purple-400 font-bold">&#64;query</span> products <span class="text-purple-400 font-bold">from</span> products <span class="text-purple-400 font-bold">order by</span> id <span class="text-purple-400 font-bold">desc</span><br>
+                    <span class="text-purple-400 font-bold">&#64;endquery</span>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="glass-card rounded-3xl p-8 border border-slate-800 shadow-xl space-y-6">
+                <div class="flex items-center gap-4 border-b border-slate-800/80 pb-4">
+                    <span class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-emerald-600/30">4</span>
+                    <div>
+                        <one-heading level="2">Step 4: Use Developer Custom Components (&lt;product-card&gt;)</one-heading>
+                        <p class="text-xs text-slate-400">Rendering custom reusable components created in public/components/product-card.one</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#070a12] text-slate-300 rounded-2xl p-6 font-mono text-xs shadow-inner border border-slate-800 leading-relaxed">
+                    &lt;<span class="text-amber-400">one-grid</span> <span class="text-indigo-300">cols</span>=<span class="text-emerald-300">"3"</span> <span class="text-indigo-300">gap</span>=<span class="text-emerald-300">"6"</span>&gt;<br>
+                    &nbsp;&nbsp;<span class="text-purple-400 font-bold">&#64;foreach</span> products <span class="text-purple-400 font-bold">as</span> product<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="text-amber-400">product-card</span> <span class="text-indigo-300">id</span>=<span class="text-emerald-300">"&#123;&#123; product.id &#125;&#125;"</span> <span class="text-indigo-300">title</span>=<span class="text-emerald-300">"&#123;&#123; product.name &#125;&#125;"</span> <span class="text-indigo-300">price</span>=<span class="text-emerald-300">"&#123;&#123; product.price &#125;&#125;"</span>&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="text-amber-400">p</span>&gt;&#123;&#123; product.description &#125;&#125;&lt;/<span class="text-amber-400">p</span>&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="text-amber-400">product-card</span>&gt;<br>
+                    &nbsp;&nbsp;<span class="text-purple-400 font-bold">&#64;endforeach</span><br>
+                    &lt;/<span class="text-amber-400">one-grid</span>&gt;
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="glass-card rounded-3xl p-8 border border-slate-800 shadow-xl space-y-6">
+                <div class="flex items-center gap-4 border-b border-slate-800/80 pb-4">
+                    <span class="w-10 h-10 rounded-2xl bg-rose-600 text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-rose-600/30">5</span>
+                    <div>
+                        <one-heading level="2">Step 5: Add Delete Action (&#64;delete)</one-heading>
+                        <p class="text-xs text-slate-400">Allowing users to remove items from the database instantly</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#070a12] text-slate-300 rounded-2xl p-6 font-mono text-xs shadow-inner border border-slate-800 leading-relaxed">
+                    &lt;<span class="text-rose-400">form</span> <span class="text-purple-400 font-bold">&#64;delete</span>=<span class="text-emerald-300">"products"</span> <span class="text-indigo-300">where</span>=<span class="text-emerald-300">"id = &#123;&#123; product.id &#125;&#125;"</span> <span class="text-indigo-300">redirect</span>=<span class="text-emerald-300">"/store"</span>&gt;<br>
+                    &nbsp;&nbsp;&lt;<span class="text-amber-400">one-button</span> <span class="text-indigo-300">type</span>=<span class="text-emerald-300">"submit"</span> <span class="text-indigo-300">variant</span>=<span class="text-emerald-300">"danger"</span>&gt;Delete Product&lt;/<span class="text-amber-400">one-button</span>&gt;<br>
+                    &lt;/<span class="text-rose-400">form</span>&gt;
+                </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="glass-card rounded-3xl p-8 border border-slate-800 shadow-xl space-y-6">
+                <div class="flex items-center gap-4 border-b border-slate-800/80 pb-4">
+                    <span class="w-10 h-10 rounded-2xl bg-cyan-600 text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-cyan-600/30">6</span>
+                    <div>
+                        <one-heading level="2">Step 6: Complete Production Code (Full App in 1 File)</one-heading>
+                        <p class="text-xs text-slate-400">Putting all steps together into a single dynamic app file</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#070a12] text-slate-300 rounded-2xl p-6 font-mono text-xs shadow-inner border border-slate-800 leading-relaxed overflow-x-auto">
+                    <span class="text-purple-400 font-bold">&#64;include</span> <span class="text-emerald-300">"header"</span><br><br>
+
+                    &lt;<span class="text-amber-400">one-container</span> <span class="text-indigo-300">max-width</span>=<span class="text-emerald-300">"7xl"</span>&gt;<br>
+                    &nbsp;&nbsp;&lt;<span class="text-amber-400">one-heading</span> <span class="text-indigo-300">level</span>=<span class="text-emerald-300">"1"</span>&gt;My Digital Storefront&lt;/<span class="text-amber-400">one-heading</span>&gt;<br><br>
+
+                    &nbsp;&nbsp;&lt;<span class="text-rose-400">form</span> <span class="text-purple-400 font-bold">&#64;insert</span>=<span class="text-emerald-300">"products"</span> <span class="text-indigo-300">validate</span>=<span class="text-emerald-300">"name|required|min:3;price|required|numeric"</span> <span class="text-indigo-300">redirect</span>=<span class="text-emerald-300">"/store"</span>&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="text-amber-400">one-input</span> <span class="text-indigo-300">name</span>=<span class="text-emerald-300">"name"</span> <span class="text-indigo-300">label</span>=<span class="text-emerald-300">"Product Title"</span> <span class="text-indigo-300">required</span> /&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="text-amber-400">one-input</span> <span class="text-indigo-300">name</span>=<span class="text-emerald-300">"price"</span> <span class="text-indigo-300">label</span>=<span class="text-emerald-300">"Price (৳)"</span> <span class="text-indigo-300">required</span> /&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="text-amber-400">one-button</span> <span class="text-indigo-300">type</span>=<span class="text-emerald-300">"submit"</span>&gt;Add Product&lt;/<span class="text-amber-400">one-button</span>&gt;<br>
+                    &nbsp;&nbsp;&lt;/<span class="text-rose-400">form</span>&gt;<br><br>
+
+                    &nbsp;&nbsp;<span class="text-purple-400 font-bold">&#64;query</span> products <span class="text-purple-400 font-bold">from</span> products <span class="text-purple-400 font-bold">order by</span> id <span class="text-purple-400 font-bold">desc</span><br>
+                    &nbsp;&nbsp;<span class="text-purple-400 font-bold">&#64;endquery</span><br><br>
+
+                    &nbsp;&nbsp;&lt;<span class="text-amber-400">one-grid</span> <span class="text-indigo-300">cols</span>=<span class="text-emerald-300">"3"</span> <span class="text-indigo-300">gap</span>=<span class="text-emerald-300">"6"</span>&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400 font-bold">&#64;foreach</span> products <span class="text-purple-400 font-bold">as</span> product<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="text-amber-400">product-card</span> <span class="text-indigo-300">id</span>=<span class="text-emerald-300">"&#123;&#123; product.id &#125;&#125;"</span> <span class="text-indigo-300">title</span>=<span class="text-emerald-300">"&#123;&#123; product.name &#125;&#125;"</span> <span class="text-indigo-300">price</span>=<span class="text-emerald-300">"&#123;&#123; product.price &#125;&#125;"</span>&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="text-rose-400">form</span> <span class="text-purple-400 font-bold">&#64;delete</span>=<span class="text-emerald-300">"products"</span> <span class="text-indigo-300">where</span>=<span class="text-emerald-300">"id = &#123;&#123; product.id &#125;&#125;"</span> <span class="text-indigo-300">redirect</span>=<span class="text-emerald-300">"/store"</span>&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="text-amber-400">one-button</span> <span class="text-indigo-300">type</span>=<span class="text-emerald-300">"submit"</span> <span class="text-indigo-300">variant</span>=<span class="text-emerald-300">"danger"</span>&gt;Delete&lt;/<span class="text-amber-400">one-button</span>&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="text-rose-400">form</span>&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="text-amber-400">product-card</span>&gt;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400 font-bold">&#64;endforeach</span><br>
+                    &nbsp;&nbsp;&lt;/<span class="text-amber-400">one-grid</span>&gt;<br>
+                    &lt;/<span class="text-amber-400">one-container</span>&gt;<br><br>
+
+                    <span class="text-purple-400 font-bold">&#64;include</span> <span class="text-emerald-300">"footer"</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</one-container>
+
+@include "footer"

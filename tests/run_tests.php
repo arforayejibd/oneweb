@@ -77,7 +77,7 @@ if (!empty($testProduct[0]['id'])) {
 }
 
 // 4. Renderer Template Execution Test
-$renderer = new Renderer(__DIR__ . '/../views');
+$renderer = new Renderer(__DIR__ . '/../public');
 $context = ['title' => 'OneScript Test Page'];
 $testNodes = [
     ['type' => 'TextNode', 'value' => '<h1>'],
@@ -86,6 +86,47 @@ $testNodes = [
 ];
 $renderedHtml = $renderer->renderNodes($testNodes, $context);
 assertTest($renderedHtml === '<h1>OneScript Test Page</h1>', "Renderer resolves {{ title }} variable");
+
+// 5. OneScript UI Component System (<one-*>) Test
+$uiSource = '<one-grid cols="3"><one-card title="{{ p.name }}" price="৳{{ p.price }}"><p>Product details</p></one-card></one-grid>';
+$uiTokens = Lexer::tokenize($uiSource);
+assertTest($uiTokens[0]['type'] === 'T_ONE_COMPONENT_START' && $uiTokens[0]['name'] === 'grid', "Lexer tokenizes <one-grid> start tag");
+assertTest($uiTokens[0]['attributes']['cols'] === '3', "Lexer parses component attribute cols='3'");
+
+$uiAst = Parser::parse($uiTokens);
+assertTest(isset($uiAst[0]['type']) && $uiAst[0]['type'] === 'ComponentNode' && $uiAst[0]['name'] === 'grid', "Parser builds AST ComponentNode for <one-grid>");
+assertTest(isset($uiAst[0]['children'][0]['type']) && $uiAst[0]['children'][0]['type'] === 'ComponentNode', "Parser nests child <one-card> inside <one-grid>");
+
+$renderContext = ['p' => ['name' => 'Smart Watch', 'price' => '2500']];
+$uiOutput = $renderer->renderNodes($uiAst, $renderContext);
+assertTest(strpos($uiOutput, 'grid-cols-') !== false, "Renderer generates responsive grid class for cols=3");
+assertTest(strpos($uiOutput, 'Smart Watch') !== false, "Renderer resolves variables inside component attributes");
+assertTest(strpos($uiOutput, 'Product details') !== false, "Renderer renders component child HTML content");
+
+// 6. Auth Directives Test (@auth / @guest)
+$authSource = '@auth Welcome Member @endauth @guest Hello Guest @endguest';
+$authTokens = Lexer::tokenize($authSource);
+assertTest($authTokens[0]['type'] === 'T_AUTH_START', "Lexer recognizes @auth directive");
+$authAst = Parser::parse($authTokens);
+$guestContext = ['auth' => ['check' => false, 'user' => null]];
+$guestOutput = $renderer->renderNodes($authAst, $guestContext);
+assertTest(strpos($guestOutput, 'Hello Guest') !== false && strpos($guestOutput, 'Welcome Member') === false, "Renderer evaluates @guest correctly for unauthenticated user");
+
+$memberContext = ['auth' => ['check' => true, 'user' => ['name' => 'John']]];
+$memberOutput = $renderer->renderNodes($authAst, $memberContext);
+assertTest(strpos($memberOutput, 'Welcome Member') !== false && strpos($memberOutput, 'Hello Guest') === false, "Renderer evaluates @auth correctly for authenticated user");
+
+// 7. Developer Custom Component Test (<product-card ... />)
+$customCompSource = '<product-card id="101" title="Custom Wireless Mouse" price="1200">High precision optical sensor</product-card>';
+$customTokens = Lexer::tokenize($customCompSource);
+$customAst = Parser::parse($customTokens);
+$customOutput = $renderer->renderNodes($customAst, $context);
+assertTest(strpos($customOutput, 'Custom Wireless Mouse') !== false, "Engine resolves developer custom component from public/components/product-card.one");
+assertTest(strpos($customOutput, 'High precision optical sensor') !== false, "Engine passes slot content to developer custom component");
+
+// 8. Automatic Engine UI Asset Injection Test
+$renderedPage = \OneScript\Engine\OneScript::render(__DIR__ . '/../public/products.one');
+assertTest(strpos($renderedPage, 'cdn.tailwindcss.com') !== false, "Engine automatically injects UI assets into rendered response");
 
 echo "\n=============================================\n";
 echo "Test Summary: {$testsPassed} Passed, {$testsFailed} Failed.\n";

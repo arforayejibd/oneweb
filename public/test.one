@@ -1,0 +1,35 @@
+@include "header"
+
+<one-container max-width="7xl">
+    <div class="py-16 text-center">
+        <one-badge variant="purple">Page Overview</one-badge>
+        <div class="mt-4">
+            <one-heading level="1">Test Page</one-heading>
+        </div>
+    </div>
+</one-container>
+
+<one-container max-width="7xl">
+    <div class="py-16 text-center">
+        <one-badge variant="success">Success</one-badge>
+        <div class="mt-8 flex justify-center gap-4">
+            <one-button type="secondary">Secondary</one-button>
+            <one-button type="success">Success</one-button>
+        </div>
+    </div>
+</one-container>
+
+<one-container max-width="7xl">
+    <div class="py-16 text-center">
+        <one-form>
+            <div class="grid lg:grid-cols-2 gap-4 text-left">
+                <one-input label="Name" name="name"></one-input>
+                <one-input label="Email" name="email"></one-input>
+            </div>
+            <div class="mt-4">
+                <one-button type="submit">Submit</one-button>
+            </div>
+        </one-form>
+    </div>
+</one-container>
+@include "footer"

@@ -1,0 +1,15 @@
+<div class="glass-card rounded-3xl p-6 border border-slate-800 shadow-xl space-y-4 hover:scale-[1.02] transition-all duration-300 relative group">
+    <div class="flex items-start justify-between gap-4">
+        <div>
+            <h3 class="text-lg font-bold text-white tracking-tight group-hover:text-indigo-400 transition-colors">{{ title }}</h3>
+            <span class="text-xs text-slate-400 font-mono">ID: #{{ id }}</span>
+        </div>
+        <span class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            ৳{{ price }}
+        </span>
+    </div>
+
+    <div class="text-xs text-slate-400 leading-relaxed">
+        {{ slot }}
+    </div>
+</div>

@@ -4,13 +4,14 @@ namespace OneScript\Engine;
 
 class FormHandler {
     public static function handlePostRequest(): void {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
             return;
         }
 
         $action = $_POST['_onescript_action'] ?? null;
         $table  = $_POST['_onescript_table'] ?? null;
         $where  = $_POST['_onescript_where'] ?? null;
+        $validate = $_POST['_onescript_validate'] ?? null;
         $signature = $_POST['_onescript_signature'] ?? null;
         $redirect = $_POST['_onescript_redirect'] ?? ($_SERVER['HTTP_REFERER'] ?? '/');
 
@@ -18,7 +19,7 @@ class FormHandler {
             return;
         }
 
-        // Security validation: check cryptographic signature to prevent form parameter tampering (BOLA/IDOR)
+        // Security validation: check cryptographic signature to prevent form parameter tampering
         $expectedSignature = self::generateSignature($action, $table, $where ?? '');
         if (!$signature || !hash_equals($expectedSignature, $signature)) {
             http_response_code(403);
@@ -34,6 +35,21 @@ class FormHandler {
         foreach ($_POST as $key => $value) {
             if (strpos($key, '_onescript_') !== 0) {
                 $data[$key] = is_string($value) ? trim($value) : $value;
+            }
+        }
+
+        // Run validation engine if validate attribute is present
+        if (!empty($validate) && strtolower($action) !== 'delete') {
+            $valError = self::validatePayload($data, $validate);
+            if ($valError !== null) {
+                if (session_status() === PHP_SESSION_NONE) {
+                    @session_start();
+                }
+                $_SESSION['_onescript_flash_error'] = $valError;
+                $redirect = preg_replace('/\.one$/i', '', $redirect);
+                if ($redirect === '/index') $redirect = '/';
+                header("Location: " . $redirect);
+                exit;
             }
         }
 
@@ -55,7 +71,7 @@ class FormHandler {
                 break;
         }
 
-        // Normalize clean redirect URL (remove .one extension from redirect URL)
+        // Normalize clean redirect URL
         $redirect = preg_replace('/\.one$/i', '', $redirect);
         if ($redirect === '/index') {
             $redirect = '/';
@@ -65,14 +81,52 @@ class FormHandler {
         exit;
     }
 
+    private static function validatePayload(array $data, string $rulesString): ?string {
+        // Rules string format: "name|required|min:3;email|required|email;price|required|numeric"
+        $fieldGroups = explode(';', $rulesString);
+        foreach ($fieldGroups as $group) {
+            $group = trim($group);
+            if ($group === '') continue;
+
+            $parts = explode('|', $group);
+            $field = trim($parts[0]);
+            $value = $data[$field] ?? null;
+
+            for ($i = 1; $i < count($parts); $i++) {
+                $rule = trim($parts[$i]);
+
+                if ($rule === 'required') {
+                    if ($value === null || $value === '') {
+                        return "Field '" . ucfirst($field) . "' is required.";
+                    }
+                } elseif (strpos($rule, 'min:') === 0) {
+                    $min = (int)substr($rule, 4);
+                    if ($value !== null && strlen((string)$value) < $min) {
+                        return "Field '" . ucfirst($field) . "' must be at least {$min} characters.";
+                    }
+                } elseif ($rule === 'numeric') {
+                    if ($value !== null && $value !== '' && !is_numeric($value)) {
+                        return "Field '" . ucfirst($field) . "' must be a valid number.";
+                    }
+                } elseif ($rule === 'email') {
+                    if ($value !== null && $value !== '' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                        return "Field '" . ucfirst($field) . "' must be a valid email address.";
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
     public static function generateSignature(string $action, string $table, string $where): string {
         $secret = self::getSecret();
         return hash_hmac('sha256', $action . '|' . $table . '|' . $where, $secret);
     }
 
     private static function getSecret(): string {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+            @session_start();
         }
         if (empty($_SESSION['_onescript_secret'])) {
             $_SESSION['_onescript_secret'] = bin2hex(random_bytes(32));

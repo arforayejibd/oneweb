@@ -38,6 +38,45 @@ class Parser {
                     $nodes[] = ['type' => 'VarNode', 'expression' => $token['value']];
                     break;
 
+                case 'T_AUTH_START':
+                    $children = $this->parseNodes('T_AUTH_END');
+                    if ($this->pos < $count && $this->tokens[$this->pos]['type'] === 'T_AUTH_END') {
+                        $this->pos++; // consume T_AUTH_END
+                    }
+                    $nodes[] = ['type' => 'AuthNode', 'children' => $children];
+                    break;
+
+                case 'T_GUEST_START':
+                    $children = $this->parseNodes('T_GUEST_END');
+                    if ($this->pos < $count && $this->tokens[$this->pos]['type'] === 'T_GUEST_END') {
+                        $this->pos++; // consume T_GUEST_END
+                    }
+                    $nodes[] = ['type' => 'GuestNode', 'children' => $children];
+                    break;
+
+                case 'T_TRY_START':
+                    $tryChildren = $this->parseNodes('T_TRY_END', 'T_CATCH_START');
+                    $catchChildren = [];
+                    $catchVar = 'error';
+
+                    if ($this->pos < $count && $this->tokens[$this->pos]['type'] === 'T_CATCH_START') {
+                        $catchVar = $this->tokens[$this->pos]['var'] ?? 'error';
+                        $this->pos++; // consume T_CATCH_START
+                        $catchChildren = $this->parseNodes('T_TRY_END');
+                    }
+
+                    if ($this->pos < $count && $this->tokens[$this->pos]['type'] === 'T_TRY_END') {
+                        $this->pos++; // consume T_TRY_END
+                    }
+
+                    $nodes[] = [
+                        'type' => 'TryCatchNode',
+                        'tryChildren' => $tryChildren,
+                        'catchChildren' => $catchChildren,
+                        'catchVar' => $catchVar
+                    ];
+                    break;
+
                 case 'T_QUERY_START':
                     $children = $this->parseNodes('T_QUERY_END');
                     if ($this->pos < $count && $this->tokens[$this->pos]['type'] === 'T_QUERY_END') {
@@ -87,6 +126,29 @@ class Parser {
                     ];
                     break;
 
+                case 'T_ONE_COMPONENT_SELF':
+                    $nodes[] = [
+                        'type' => 'ComponentNode',
+                        'name' => $token['name'],
+                        'attributes' => $token['attributes'] ?? [],
+                        'children' => []
+                    ];
+                    break;
+
+                case 'T_ONE_COMPONENT_START':
+                    $compName = $token['name'];
+                    $children = $this->parseNodes('T_ONE_COMPONENT_END');
+                    if ($this->pos < $count && $this->tokens[$this->pos]['type'] === 'T_ONE_COMPONENT_END') {
+                        $this->pos++; // consume T_ONE_COMPONENT_END
+                    }
+                    $nodes[] = [
+                        'type' => 'ComponentNode',
+                        'name' => $compName,
+                        'attributes' => $token['attributes'] ?? [],
+                        'children' => $children
+                    ];
+                    break;
+
                 case 'T_INCLUDE':
                     $nodes[] = [
                         'type' => 'IncludeNode',
@@ -103,13 +165,13 @@ class Parser {
                         'actionType' => $actionType,
                         'table' => $token['table'],
                         'where' => $token['where'] ?? null,
+                        'validate' => $token['validate'] ?? null,
                         'redirect' => $token['redirect'] ?? null,
                         'extra' => $token['extra'] ?? ''
                     ];
                     break;
 
                 default:
-                    // Fallback to text if unknown
                     if (isset($token['raw'])) {
                         $nodes[] = ['type' => 'TextNode', 'value' => $token['raw']];
                     }
