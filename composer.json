@@ -12,6 +12,9 @@
     "require": {
         "php": ">=8.0"
     },
+    "bin": [
+        "bin/onescript"
+    ],
     "autoload": {
         "psr-4": {
             "OneScript\\Engine\\": "onescript/engine/"

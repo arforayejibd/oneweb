@@ -3,6 +3,20 @@
 class LocalValetDriver extends Valet\Drivers\ValetDriver
 {
     /**
+     * Get the boot script path, checking vendor first then local.
+     */
+    private function getBootPath(string $sitePath): ?string
+    {
+        if (file_exists($sitePath . '/vendor/arforayejibd/oneweb/onescript/engine/boot.php')) {
+            return $sitePath . '/vendor/arforayejibd/oneweb/onescript/engine/boot.php';
+        }
+        if (file_exists($sitePath . '/onescript/engine/boot.php')) {
+            return $sitePath . '/onescript/engine/boot.php';
+        }
+        return null;
+    }
+
+    /**
      * Determine if the driver serves the request.
      *
      * @param  string  $sitePath
@@ -12,7 +26,7 @@ class LocalValetDriver extends Valet\Drivers\ValetDriver
      */
     public function serves(string $sitePath, string $siteName, string $uri): bool
     {
-        return file_exists($sitePath . '/onescript/engine/boot.php');
+        return $this->getBootPath($sitePath) !== null;
     }
 
     /**
@@ -44,6 +58,6 @@ class LocalValetDriver extends Valet\Drivers\ValetDriver
      */
     public function frontControllerPath(string $sitePath, string $siteName, string $uri): ?string
     {
-        return $sitePath . '/onescript/engine/boot.php';
+        return $this->getBootPath($sitePath);
     }
 }

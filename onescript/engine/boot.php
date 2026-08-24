@@ -23,7 +23,7 @@ spl_autoload_register(function ($class) {
 use OneScript\Engine\OneScript;
 use OneScript\Engine\Database;
 
-$rootDir = dirname(__DIR__, 2);
+$rootDir = OneScript::getRootDir();
 $dbConfig = Database::loadConfigFromOneFile();
 
 OneScript::boot([

@@ -22,11 +22,24 @@
 
 ## Installation
 
+### 1. Require the Package
 Install OneWeb in your PHP project via Composer:
 
 ```bash
 composer require arforayejibd/oneweb
 ```
+
+### 2. Initialize the Project
+Run the initialization command to automatically set up the workspace folders and configuration files:
+
+```bash
+php vendor/bin/onescript init
+```
+
+This will automatically create:
+- An empty `public/` directory for your `.one` view templates.
+- A `.vscode/settings.json` file (setting up HTML syntax highlighting for `*.one` files in VS Code).
+- The framework files: `config.one`, `onescript.sqlite`, `.htaccess`, `LocalValetDriver.php`, and `index.php`.
 
 ---
 

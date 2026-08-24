@@ -4,6 +4,20 @@ namespace OneScript\Engine;
 
 class OneScript {
     private static array $config = [];
+    private static ?string $rootDir = null;
+
+    public static function getRootDir(): string {
+        if (self::$rootDir === null) {
+            $normalizedPath = str_replace('\\', '/', __DIR__);
+            if (strpos($normalizedPath, '/vendor/arforayejibd/oneweb/') !== false) {
+                $parts = explode('/vendor/arforayejibd/oneweb/', $normalizedPath);
+                self::$rootDir = $parts[0];
+            } else {
+                self::$rootDir = dirname(__DIR__, 2);
+            }
+        }
+        return self::$rootDir;
+    }
 
     public static function boot(array $config): void {
         self::$config = $config;
@@ -20,7 +34,7 @@ class OneScript {
         }
 
         $viewsDir = self::$config['views_dir'] ?? (dirname($viewPath));
-        $cacheDir = __DIR__ . '/cache';
+        $cacheDir = self::getRootDir() . '/onescript/cache';
         if (!is_dir($cacheDir)) {
             @mkdir($cacheDir, 0777, true);
         }
