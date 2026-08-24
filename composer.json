@@ -19,5 +19,9 @@
         "psr-4": {
             "OneScript\\Engine\\": "onescript/engine/"
         }
+    },
+    "scripts": {
+        "start": "php bin/onescript",
+        "one": "php bin/onescript"
     }
 }

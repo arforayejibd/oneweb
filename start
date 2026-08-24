@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ "$1" = "one" ]; then
+    php bin/onescript
+else
+    echo "Usage: ./start one"
+fi

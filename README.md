@@ -1,5 +1,6 @@
-# OneWeb - HTML-First PHP Template Engine & Micro-Framework
+# OneWeb - HTML-First PHP Template Engine & Micro-Framework (v1.0.2)
 
+[![Version](https://img.shields.io/badge/version-v1.0.2-blue.svg)](https://github.com/arforayejibd/oneweb)
 [![Latest Stable Version](https://img.shields.io/packagist/v/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
 [![Total Downloads](https://img.shields.io/packagist/dt/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
 [![License](https://img.shields.io/packagist/l/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
@@ -30,11 +31,19 @@ composer create-project arforayejibd/oneweb ./
 ```
 
 ### 2. Start the Local Server
-Start the local development server:
+Start the local development server using one of the following commands:
 
+**Cross-platform (recommended):**
 ```bash
-php bin/onescript
+composer run one
 ```
+*(Or `composer start`)*
+
+**Or using shortcuts:**
+- **Windows:** `start one` or `run one`
+- **macOS/Linux:** `./start one` or `./run one` *(Make sure to run `chmod +x start run` first)*
+
+
 
 This command will automatically:
 - Start the server at **`http://localhost:8000`**
