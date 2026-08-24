@@ -23,7 +23,75 @@ if (!file_exists($bootScript)) {
     exit(1);
 }
 
-// 1. Auto-create VS Code settings for HTML association
+// 1. Auto-configure VS Code global settings for HTML association
+function autoConfigureVSCodeGlobal() {
+    $os = strtoupper(substr(PHP_OS, 0, 3));
+    $settingsPath = null;
+    
+    if ($os === 'WIN') {
+        $appData = getenv('APPDATA');
+        if ($appData) {
+            $settingsPath = $appData . '/Code/User/settings.json';
+        }
+    } elseif ($os === 'MAC' || PHP_OS === 'Darwin') {
+        $home = getenv('HOME') ?: ($_SERVER['HOME'] ?? null);
+        if ($home) {
+            $settingsPath = $home . '/Library/Application Support/Code/User/settings.json';
+        }
+    } else { // Linux
+        $home = getenv('HOME') ?: ($_SERVER['HOME'] ?? null);
+        if ($home) {
+            $settingsPath = $home . '/.config/Code/User/settings.json';
+        }
+    }
+    
+    if ($settingsPath && is_dir(dirname($settingsPath))) {
+        $updated = false;
+        if (!file_exists($settingsPath)) {
+            $defaultSettings = [
+                "files.associations" => [
+                    "*.one" => "html"
+                ]
+            ];
+            @file_put_contents($settingsPath, json_encode($defaultSettings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            $updated = true;
+        } else {
+            $content = file_get_contents($settingsPath);
+            if (strpos($content, '*.one') === false) {
+                // Try decoding without comments first
+                $cleanContent = preg_replace('~/\*.*?\*/~s', '', $content);
+                $cleanContent = preg_replace('~//.*?$~m', '', $cleanContent);
+                $decoded = json_decode($cleanContent, true);
+                
+                if (is_array($decoded)) {
+                    if (!isset($decoded['files.associations'])) {
+                        $decoded['files.associations'] = [];
+                    }
+                    $decoded['files.associations']['*.one'] = 'html';
+                    @file_put_contents($settingsPath, json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+                    $updated = true;
+                } else {
+                    // Fallback to simple regex injection to preserve comments
+                    if (preg_match('/"files\.associations"\s*:\s*\{/', $content)) {
+                        $content = preg_replace('/("files\.associations"\s*:\s*\{)/', "$1\n        \"*.one\": \"html\",", $content, 1);
+                        @file_put_contents($settingsPath, $content);
+                        $updated = true;
+                    } else {
+                        $content = preg_replace('/(\{)/', "$1\n  \"files.associations\": {\n    \"*.one\": \"html\"\n  },", $content, 1);
+                        @file_put_contents($settingsPath, $content);
+                        $updated = true;
+                    }
+                }
+            }
+        }
+        if ($updated) {
+            echo "Auto-configured VS Code global user settings: associated *.one files with HTML.\n";
+        }
+    }
+}
+autoConfigureVSCodeGlobal();
+
+// 2. Auto-create local VS Code settings for HTML association
 $vscodeDir = $projectRoot . '/.vscode';
 if (!is_dir($vscodeDir)) {
     @mkdir($vscodeDir, 0777, true);
