@@ -23,19 +23,16 @@
 ## Installation
 
 ### 1. Create a New Project
-Run the following command to download the framework skeleton and set up your project directory:
+Run the following command to download the framework skeleton and set up your project in the current directory:
 
 ```bash
-composer create-project arforayejibd/oneweb my-project
+composer create-project arforayejibd/oneweb ./
 ```
 
-*(Replace `my-project` with your desired folder name)*
-
 ### 2. Start the Local Server
-Change into your project directory and start the local development server:
+Start the local development server:
 
 ```bash
-cd my-project
 php bin/onescript
 ```
 
