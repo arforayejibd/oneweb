@@ -2,7 +2,7 @@
 
 <one-container max-width="7xl">
     <div class="py-16 text-center">
-        <one-badge variant="purple">Page Overview</one-badge>
+        <one-badge variant="success">Page Overview</one-badge>
         <div class="mt-4">
             <one-heading level="1">Test Page</one-heading>
         </div>
@@ -32,4 +32,5 @@
         </one-form>
     </div>
 </one-container>
+
 @include "footer"
