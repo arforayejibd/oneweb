@@ -44,6 +44,9 @@ class Database {
             } catch (PDOException $e) {
                 // Fallback to SQLite file DB if MySQL is offline or unconfigured locally
                 $sqliteFile = OneScript::getRootDir() . '/onescript.sqlite';
+                if (!file_exists($sqliteFile)) {
+                    @touch($sqliteFile);
+                }
                 self::$pdo = new PDO("sqlite:" . $sqliteFile, null, null, [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -52,6 +55,9 @@ class Database {
             }
         } else {
             $sqliteFile = OneScript::getRootDir() . '/onescript.sqlite';
+            if (!file_exists($sqliteFile)) {
+                @touch($sqliteFile);
+            }
             self::$pdo = new PDO("sqlite:" . $sqliteFile, null, null, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -69,6 +75,15 @@ class Database {
 
     public static function loadConfigFromOneFile(): array {
         $configPath = OneScript::getRootDir() . '/config.one';
+        if (!file_exists($configPath)) {
+            $defaultConfigContent = <<<EOT
+@db
+    driver = "sqlite"
+    database = "onescript.sqlite"
+@enddb
+EOT;
+            @file_put_contents($configPath, $defaultConfigContent);
+        }
         $default = [
             'driver'      => 'mysql',
             'host'        => '127.0.0.1',

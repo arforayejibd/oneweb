@@ -2,44 +2,31 @@
 <?php
 
 /**
- * OneScript CLI Tool & Project Initializer
+ * OneScript Local Development Server Runner & Initializer
  */
 
 if (PHP_SAPI !== 'cli') {
     exit("This script can only be run from the command line.\n");
 }
 
-$args = $argv;
-$command = isset($args[1]) ? strtolower(trim($args[1])) : '';
+$projectRoot = getcwd();
+$packageRoot = dirname(__DIR__);
+$bootScript = $packageRoot . '/onescript/engine/boot.php';
 
-if ($command !== 'init') {
-    echo "OneScript CLI Tool\n";
-    echo "Usage:\n";
-    echo "  php vendor/bin/onescript init      Initialize a new OneScript project\n\n";
+// Fallback if directory structure is different
+if (!file_exists($bootScript)) {
+    $bootScript = $projectRoot . '/vendor/arforayejibd/oneweb/onescript/engine/boot.php';
+}
+
+if (!file_exists($bootScript)) {
+    echo "Error: OneScript bootloader not found at: $bootScript\n";
     exit(1);
 }
 
-$projectRoot = getcwd();
-$packageRoot = dirname(__DIR__);
-
-echo "Initializing OneScript project in: $projectRoot\n\n";
-
-// 1. Create empty public directory
-$publicDir = $projectRoot . '/public';
-if (!is_dir($publicDir)) {
-    if (mkdir($publicDir, 0777, true)) {
-        echo "Created directory: public/\n";
-    } else {
-        echo "Error: Failed to create public/ directory.\n";
-    }
-} else {
-    echo "Skipped: public/ directory (already exists)\n";
-}
-
-// 2. Create .vscode directory and settings.json
+// 1. Auto-create VS Code settings for HTML association
 $vscodeDir = $projectRoot . '/.vscode';
 if (!is_dir($vscodeDir)) {
-    mkdir($vscodeDir, 0777, true);
+    @mkdir($vscodeDir, 0777, true);
 }
 $vscodeSettingsFile = $vscodeDir . '/settings.json';
 if (!file_exists($vscodeSettingsFile)) {
@@ -48,111 +35,69 @@ if (!file_exists($vscodeSettingsFile)) {
             "*.one" => "html"
         ]
     ];
-    if (file_put_contents($vscodeSettingsFile, json_encode($vscodeSettings, JSON_PRETTY_PRINT))) {
-        echo "Created: .vscode/settings.json (HTML association for *.one files)\n";
-    } else {
-        echo "Error: Failed to create .vscode/settings.json\n";
-    }
-} else {
-    echo "Skipped: .vscode/settings.json (already exists)\n";
+    @file_put_contents($vscodeSettingsFile, json_encode($vscodeSettings, JSON_PRETTY_PRINT));
 }
 
-// Helper to copy files
-$copyFile = function ($srcName, $destName) use ($packageRoot, $projectRoot) {
-    $srcPath = $packageRoot . '/' . $srcName;
-    $destPath = $projectRoot . '/' . $destName;
-
-    if (!file_exists($srcPath)) {
-        echo "Warning: Source file $srcName not found in package.\n";
-        return;
-    }
-
-    if (file_exists($destPath)) {
-        echo "Skipped: $destName (already exists)\n";
-        return;
-    }
-
-    if (copy($srcPath, $destPath)) {
-        echo "Created: $destName\n";
-    } else {
-        echo "Error: Failed to copy $srcName to $destName\n";
-    }
-};
-
-// 3. Copy configuration files
-$copyFile('config.one', 'config.one');
-$copyFile('onescript.sqlite', 'onescript.sqlite');
-$copyFile('LocalValetDriver.php', 'LocalValetDriver.php');
-
-// 4. Create .htaccess routing to index.php
-$htaccessFile = $projectRoot . '/.htaccess';
-if (!file_exists($htaccessFile)) {
-    $htaccessContent = <<<EOT
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
-
-    # Block direct HTTP access to raw .one, .json, .sqlite, and config files
-    <FilesMatch "\.(one|json|sqlite|db|env)$">
-        Order allow,deny
-        Deny from all
-    </FilesMatch>
-
-    # Route all HTTP requests to index.php
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php [QSA,L]
-</IfModule>
+// 2. Auto-create public directory and default index.one template
+$publicDir = $projectRoot . '/public';
+if (!is_dir($publicDir)) {
+    @mkdir($publicDir, 0777, true);
+}
+$indexOne = $publicDir . '/index.one';
+if (!file_exists($indexOne)) {
+    $defaultIndexContent = <<<EOT
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to OneWeb</title>
+</head>
+<body>
+    <one-container max-width="5xl" class="py-12">
+        <div class="text-center">
+            <one-badge variant="purple">Successfully Installed</one-badge>
+            <h1 class="text-4xl font-extrabold my-4 text-gradient-primary">Welcome to OneWeb!</h1>
+            <p class="text-slate-400 text-lg mb-8">Your HTML-first PHP template engine is ready to go.</p>
+        </div>
+        
+        <one-card title="Start Customizing" price="Step 1">
+            <p class="mb-4">Open the following file and edit it to change this page:</p>
+            <code class="block bg-slate-950 p-4 rounded text-emerald-400 mb-4">public/index.one</code>
+            <p>You can create other pages like <code>public/about.one</code> which will resolve to <code>/about</code>.</p>
+        </one-card>
+    </one-container>
+</body>
+</html>
 EOT;
-
-    if (file_put_contents($htaccessFile, $htaccessContent)) {
-        echo "Created: .htaccess\n";
-    } else {
-        echo "Error: Failed to create .htaccess\n";
-    }
-} else {
-    echo "Skipped: .htaccess (already exists)\n";
+    @file_put_contents($indexOne, $defaultIndexContent);
 }
 
-// 5. Create index.php front controller
-$indexFile = $projectRoot . '/index.php';
-if (!file_exists($indexFile)) {
-    $indexContent = <<<EOT
-<?php
-/**
- * OneScript front controller entry point
- */
-
-// Route static files directly (compatibility with PHP built-in web server)
-\$requestUri = parse_url(\$_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-\$file = __DIR__ . \$requestUri;
-if (\$requestUri !== '/' && file_exists(\$file) && !is_dir(\$file)) {
-    return false;
-}
-
-// Load Composer autoloader
-if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-    require_once __DIR__ . '/vendor/autoload.php';
-}
-
-// Boot OneScript engine
-if (file_exists(__DIR__ . '/vendor/arforayejibd/oneweb/onescript/engine/boot.php')) {
-    require_once __DIR__ . '/vendor/arforayejibd/oneweb/onescript/engine/boot.php';
-} else {
-    // Fallback for local development
-    require_once __DIR__ . '/onescript/engine/boot.php';
-}
+// 3. Auto-create config.one database configuration
+$configPath = $projectRoot . '/config.one';
+if (!file_exists($configPath)) {
+    $defaultConfigContent = <<<EOT
+@db
+    driver = "sqlite"
+    database = "onescript.sqlite"
+@enddb
 EOT;
-
-    if (file_put_contents($indexFile, $indexContent)) {
-        echo "Created: index.php\n";
-    } else {
-        echo "Error: Failed to create index.php\n";
-    }
-} else {
-    echo "Skipped: index.php (already exists)\n";
+    @file_put_contents($configPath, $defaultConfigContent);
 }
 
-echo "\nOneScript successfully initialized! You can start the server using:\n";
-echo "  php -S localhost:8000\n\n";
-echo "Create your first page in public/index.one to get started.\n";
+// 4. Auto-create onescript.sqlite database file
+$sqliteFile = $projectRoot . '/onescript.sqlite';
+if (!file_exists($sqliteFile)) {
+    @touch($sqliteFile);
+}
+
+echo "---------------------------------------------------------\n";
+echo " Starting OneScript Local Development Server\n";
+echo " URL: http://localhost:8000\n";
+echo " Document Root: $projectRoot\n";
+echo " Press Ctrl+C to stop the server\n";
+echo "---------------------------------------------------------\n\n";
+
+// Start the built-in web server using the bootloader as the router script
+$cmd = sprintf('php -S localhost:8000 %s', escapeshellarg($bootScript));
+passthru($cmd);

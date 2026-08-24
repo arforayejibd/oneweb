@@ -24,6 +24,57 @@ use OneScript\Engine\OneScript;
 use OneScript\Engine\Database;
 
 $rootDir = OneScript::getRootDir();
+
+// Auto-create VS Code settings for HTML association
+$vscodeDir = $rootDir . '/.vscode';
+if (!is_dir($vscodeDir)) {
+    @mkdir($vscodeDir, 0777, true);
+}
+$vscodeSettingsFile = $vscodeDir . '/settings.json';
+if (!file_exists($vscodeSettingsFile)) {
+    $vscodeSettings = [
+        "files.associations" => [
+            "*.one" => "html"
+        ]
+    ];
+    @file_put_contents($vscodeSettingsFile, json_encode($vscodeSettings, JSON_PRETTY_PRINT));
+}
+
+// Auto-create public directory and default index.one template
+$publicDir = $rootDir . '/public';
+if (!is_dir($publicDir)) {
+    @mkdir($publicDir, 0777, true);
+}
+$indexOne = $publicDir . '/index.one';
+if (!file_exists($indexOne)) {
+    $defaultIndexContent = <<<EOT
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to OneWeb</title>
+</head>
+<body>
+    <one-container max-width="5xl" class="py-12">
+        <div class="text-center">
+            <one-badge variant="purple">Successfully Installed</one-badge>
+            <h1 class="text-4xl font-extrabold my-4 text-gradient-primary">Welcome to OneWeb!</h1>
+            <p class="text-slate-400 text-lg mb-8">Your HTML-first PHP template engine is ready to go.</p>
+        </div>
+        
+        <one-card title="Start Customizing" price="Step 1">
+            <p class="mb-4">Open the following file and edit it to change this page:</p>
+            <code class="block bg-slate-950 p-4 rounded text-emerald-400 mb-4">public/index.one</code>
+            <p>You can create other pages like <code>public/about.one</code> which will resolve to <code>/about</code>.</p>
+        </one-card>
+    </one-container>
+</body>
+</html>
+EOT;
+    @file_put_contents($indexOne, $defaultIndexContent);
+}
+
 $dbConfig = Database::loadConfigFromOneFile();
 
 OneScript::boot([
