@@ -5,11 +5,11 @@
 # GitHub Linguist Language Override Settings
 # ------------------------------------------------------------------
 
-# 1. Map .one template files to HTML/OneScript syntax
+# 1. Map .one template files to HTML/OneWeb syntax
 *.one linguist-language=HTML
 *.one linguist-detectable=true
 
 # 2. Exclude CSS assets, core PHP engine, and test files from language statistics
 public/css/** linguist-vendored
-onescript/** linguist-vendored
+oneweb/** linguist-vendored
 tests/** linguist-vendored

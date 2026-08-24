@@ -1,6 +1,6 @@
-# OneWeb - HTML-First PHP Template Engine & Micro-Framework (v1.0.5)
+# OneWeb - HTML-First PHP Template Engine & Micro-Framework (v1.0.6)
 
-[![Version](https://img.shields.io/badge/version-v1.0.5-blue.svg)](https://github.com/arforayejibd/oneweb)
+[![Version](https://img.shields.io/badge/version-v1.0.6-blue.svg)](https://github.com/arforayejibd/oneweb)
 [![Latest Stable Version](https://img.shields.io/packagist/v/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
 [![Total Downloads](https://img.shields.io/packagist/dt/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
 [![License](https://img.shields.io/packagist/l/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
@@ -49,7 +49,7 @@ This command will automatically:
 - Start the server at **`http://localhost:8000`**
 - Create a `public/` directory with a default `index.one` homepage if it doesn't exist.
 - Configure `.vscode/settings.json` to enable HTML syntax highlighting for `*.one` templates in VS Code.
-- Generate your database configuration `config.one` and the SQLite database `onescript.sqlite` in the project root.
+- Generate your database configuration `config.one` and the SQLite database `oneweb.sqlite` in the project root.
 
 ### 3. Update the Framework
 To easily update the core framework files (engine and CLI runners) to the latest version, run one of the following commands:
@@ -75,7 +75,7 @@ A typical OneWeb application structure:
 │   ├── test.one            # Test page (resolves to /test)
 │   └── header.one          # Shared partials
 ├── config.one              # Database and application configuration
-├── onescript.sqlite        # Database file (if using SQLite)
+├── oneweb.sqlite        # Database file (if using SQLite)
 └── vendor/                 # Composer dependencies
 ```
 
@@ -89,7 +89,7 @@ Define your database configuration in a `config.one` file in your root folder:
 ```html
 @db
     driver = "sqlite"
-    database = "onescript.sqlite"
+    database = "oneweb.sqlite"
 @enddb
 ```
 

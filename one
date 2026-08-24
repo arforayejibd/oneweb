@@ -1,2 +1,2 @@
 #!/bin/sh
-php bin/onescript "$@"
+php bin/oneweb "$@"

@@ -1,6 +1,6 @@
 <?php
 
-namespace OneScript\Engine;
+namespace OneWeb\Engine;
 
 class Lexer {
     public static function tokenize(string $source): array {

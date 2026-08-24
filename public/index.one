@@ -14,7 +14,7 @@
         </h1>
 
         <p class="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
-            OneScript empowers developers to query databases, handle form submissions, and construct dynamic web applications using simple <strong>.one</strong> files without writing complex backend boilerplate code.
+            OneWeb empowers developers to query databases, handle form submissions, and construct dynamic web applications using simple <strong>.one</strong> files without writing complex backend boilerplate code.
         </p>
 
         <div class="flex flex-wrap items-center justify-center gap-4">
@@ -55,7 +55,7 @@
         <div class="text-center max-w-2xl mx-auto mb-14">
             <one-badge variant="info">Built-in UI Component System</one-badge>
             <div class="mt-4 mb-3">
-                <one-heading level="2">OneScript Language Capabilities</one-heading>
+                <one-heading level="2">OneWeb Language Capabilities</one-heading>
             </div>
             <p class="text-slate-400 text-sm">Empowering developers with unified directive tags and engine-driven component rendering</p>
         </div>
@@ -106,7 +106,7 @@
                     <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
                     <span class="ml-4 text-xs font-mono text-slate-400">public/index.one</span>
                 </div>
-                <span class="text-xs font-mono text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">OneScript Syntax</span>
+                <span class="text-xs font-mono text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">OneWeb Syntax</span>
             </div>
 
             <!-- Code Content -->
@@ -130,7 +130,7 @@
         </div>
     </div>
 
-    <!-- Community Feedback Form using OneScript @insert -->
+    <!-- Community Feedback Form using OneWeb @insert -->
     <div class="py-16 border-t border-slate-800/80">
         <div class="glass-card rounded-3xl p-8 sm:p-10 border border-slate-800 shadow-2xl">
             <div class="max-w-2xl mb-8">
@@ -154,12 +154,12 @@
         </div>
     </div>
 
-    <!-- Community Messages Section using OneScript @query & @foreach -->
+    <!-- Community Messages Section using OneWeb @query & @foreach -->
     <div class="py-16 border-t border-slate-800/80">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div>
                 <one-heading level="3">Recent Messages Received (@query contacts)</one-heading>
-                <p class="text-slate-400 text-sm">Live data loaded directly from database via OneScript engine</p>
+                <p class="text-slate-400 text-sm">Live data loaded directly from database via OneWeb engine</p>
             </div>
             <one-badge variant="success">Live Database Feed</one-badge>
         </div>

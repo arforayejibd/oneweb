@@ -1,6 +1,6 @@
 <?php
 
-namespace OneScript\Engine;
+namespace OneWeb\Engine;
 
 class Parser {
     private array $tokens;

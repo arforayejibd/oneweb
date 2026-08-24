@@ -1,2 +1,2 @@
 @echo off
-php bin/onescript %*
+php bin/oneweb %*

@@ -7,11 +7,11 @@ class LocalValetDriver extends Valet\Drivers\ValetDriver
      */
     private function getBootPath(string $sitePath): ?string
     {
-        if (file_exists($sitePath . '/vendor/arforayejibd/oneweb/onescript/engine/boot.php')) {
-            return $sitePath . '/vendor/arforayejibd/oneweb/onescript/engine/boot.php';
+        if (file_exists($sitePath . '/vendor/arforayejibd/oneweb/oneweb/engine/boot.php')) {
+            return $sitePath . '/vendor/arforayejibd/oneweb/oneweb/engine/boot.php';
         }
-        if (file_exists($sitePath . '/onescript/engine/boot.php')) {
-            return $sitePath . '/onescript/engine/boot.php';
+        if (file_exists($sitePath . '/oneweb/engine/boot.php')) {
+            return $sitePath . '/oneweb/engine/boot.php';
         }
         return null;
     }

@@ -6,10 +6,10 @@
         <div class="mb-14 text-center max-w-4xl mx-auto">
             <one-badge variant="success">Interactive Step-by-Step Tutorial v0.2</one-badge>
             <div class="mt-4 mb-3">
-                <one-heading level="1">Building Dynamic Web Apps with OneScript</one-heading>
+                <one-heading level="1">Building Dynamic Web Apps with OneWeb</one-heading>
             </div>
             <p class="text-slate-400 text-base sm:text-lg leading-relaxed">
-                Learn how to build a full-stack, dynamic database web application from absolute scratch in 6 simple steps using pure HTML, validation rules, custom components, and OneScript directives.
+                Learn how to build a full-stack, dynamic database web application from absolute scratch in 6 simple steps using pure HTML, validation rules, custom components, and OneWeb directives.
             </p>
         </div>
 
@@ -27,7 +27,7 @@
                 </div>
 
                 <p class="text-slate-300 text-sm leading-relaxed">
-                    Create a new file named <code>public/store.one</code> in your project folder. Every page in OneScript is an HTML file with the <code>.one</code> extension. To add a navigation header and footer, use the <code>&#64;include</code> directive:
+                    Create a new file named <code>public/store.one</code> in your project folder. Every page in OneWeb is an HTML file with the <code>.one</code> extension. To add a navigation header and footer, use the <code>&#64;include</code> directive:
                 </p>
 
                 <div class="bg-[#070a12] text-slate-300 rounded-2xl p-6 font-mono text-xs shadow-inner border border-slate-800 leading-relaxed">
@@ -35,7 +35,7 @@
 
                     &lt;<span class="text-amber-400">one-container</span>&gt;<br>
                     &nbsp;&nbsp;&lt;<span class="text-amber-400">one-heading</span> <span class="text-indigo-300">level</span>=<span class="text-emerald-300">"1"</span>&gt;Welcome to My Digital Store&lt;/<span class="text-amber-400">one-heading</span>&gt;<br>
-                    &nbsp;&nbsp;&lt;<span class="text-amber-400">p</span>&gt;This is my first dynamic web app built with OneScript.&lt;/<span class="text-amber-400">p</span>&gt;<br>
+                    &nbsp;&nbsp;&lt;<span class="text-amber-400">p</span>&gt;This is my first dynamic web app built with OneWeb.&lt;/<span class="text-amber-400">p</span>&gt;<br>
                     &lt;/<span class="text-amber-400">one-container</span>&gt;<br><br>
 
                     <span class="text-purple-400 font-bold">&#64;include</span> <span class="text-emerald-300">"footer"</span>

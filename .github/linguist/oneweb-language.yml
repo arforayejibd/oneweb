@@ -1,15 +1,15 @@
-# OneScript GitHub Linguist Official Registration Definition
+# OneWeb GitHub Linguist Official Registration Definition
 # Repository: github-linguist/linguist
 
-OneScript:
+OneWeb:
   type: markup
   color: "#6366f1"
   aliases:
   - one
-  - onescript
+  - oneweb
   extensions:
   - ".one"
-  tm_scope: text.html.onescript
+  tm_scope: text.html.oneweb
   ace_mode: html
   codemirror_mode: htmlmixed
   codemirror_mime_type: text/html

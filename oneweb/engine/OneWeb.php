@@ -1,11 +1,11 @@
 <?php
-
-namespace OneScript\Engine;
-
-class OneScript {
+ 
+namespace OneWeb\Engine;
+ 
+class OneWeb {
     private static array $config = [];
     private static ?string $rootDir = null;
-
+ 
     public static function getRootDir(): string {
         if (self::$rootDir === null) {
             $normalizedPath = str_replace('\\', '/', __DIR__);
@@ -18,33 +18,33 @@ class OneScript {
         }
         return self::$rootDir;
     }
-
+ 
     public static function boot(array $config): void {
         self::$config = $config;
         Database::init($config['db'] ?? []);
         FormHandler::handlePostRequest();
     }
-
+ 
     public static function render(string $viewPath, array $context = []): string {
         if (!file_exists($viewPath)) {
             return "<div style='color:red; font-family:sans-serif; padding:2rem;'>
-                <h2>OneScript Engine Error</h2>
+                <h2>OneWeb Engine Error</h2>
                 <p>Template file not found: <strong>" . htmlspecialchars($viewPath) . "</strong></p>
             </div>";
         }
-
+ 
         $viewsDir = self::$config['views_dir'] ?? (dirname($viewPath));
-        $cacheDir = self::getRootDir() . '/onescript/cache';
+        $cacheDir = self::getRootDir() . '/oneweb/cache';
         if (!is_dir($cacheDir)) {
             @mkdir($cacheDir, 0777, true);
         }
-
+ 
         $fileMtime = filemtime($viewPath);
         $cacheKey = md5($viewPath . '_' . $fileMtime);
         $cacheFile = $cacheDir . '/' . $cacheKey . '.ast';
-
+ 
         $debug = self::$config['debug'] ?? true;
-
+ 
         if (!$debug && file_exists($cacheFile)) {
             $ast = unserialize(file_get_contents($cacheFile));
         } else {
@@ -55,18 +55,18 @@ class OneScript {
                 @file_put_contents($cacheFile, serialize($ast), LOCK_EX);
             }
         }
-
+ 
         $renderer = new Renderer($viewsDir);
         $output = $renderer->renderNodes($ast, $context);
-        
+ 
         return self::injectEngineAssets($output);
     }
-
+ 
     private static function injectEngineAssets(string $html): string {
         if (strpos($html, 'cdn.tailwindcss.com') !== false) {
             return $html;
         }
-
+ 
         $assets = "    <script src=\"https://cdn.tailwindcss.com\"></script>\n"
                 . "    <script>\n"
                 . "        tailwind.config = {\n"
@@ -105,11 +105,11 @@ class OneScript {
                 . "        html, body { max-width: 100vw; overflow-x: hidden; }\n"
                 . "        main { transition: opacity 0.2s ease; overflow-x: hidden; }\n"
                 . "    </style>\n";
-
+ 
         $spaScript = "<script>\n"
                    . "document.addEventListener('DOMContentLoaded', () => {\n"
                    . "    const pBar = document.createElement('div');\n"
-                   . "    pBar.id = 'onescript-progress';\n"
+                   . "    pBar.id = 'oneweb-progress';\n"
                    . "    pBar.style.cssText = 'position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,#6366f1,#c084fc,#f472b6);z-index:9999;transition:width 0.3s ease, opacity 0.3s ease;box-shadow:0 0 10px #6366f1;';\n"
                    . "    document.body.appendChild(pBar);\n\n"
                    . "    function loadPage(url, push = true) {\n"
@@ -163,19 +163,19 @@ class OneScript {
                    . "    });\n"
                    . "});\n"
                    . "</script>\n";
-
+ 
         if (strpos($html, '</head>') !== false) {
             $html = str_replace('</head>', "{$assets}</head>", $html);
         } else {
             $html = $assets . $html;
         }
-
+ 
         if (strpos($html, '</body>') !== false) {
             $html = str_replace('</body>', "{$spaScript}</body>", $html);
         } else {
             $html .= $spaScript;
         }
-
+ 
         return $html;
     }
 }

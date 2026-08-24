@@ -2,7 +2,7 @@
 <?php
 
 /**
- * OneScript Local Development Server Runner & Initializer
+ * OneWeb Local Development Server Runner & Initializer
  */
 
 if (PHP_SAPI !== 'cli') {
@@ -11,16 +11,21 @@ if (PHP_SAPI !== 'cli') {
 
 $projectRoot = getcwd();
 $packageRoot = dirname(__DIR__);
-$bootScript = $packageRoot . '/onescript/engine/boot.php';
+$bootScript = $packageRoot . '/oneweb/engine/boot.php';
 
 // Fallback if directory structure is different
 if (!file_exists($bootScript)) {
-    $bootScript = $projectRoot . '/vendor/arforayejibd/oneweb/onescript/engine/boot.php';
+    $bootScript = $projectRoot . '/vendor/arforayejibd/oneweb/oneweb/engine/boot.php';
+}
+
+if (!file_exists($bootScript)) {
+    echo "Error: OneWeb bootloader not found at: $bootScript\n";
+    exit(1);
 }
 
 if ($argc > 1 && $argv[1] === 'update') {
     echo "=== OneWeb Auto-Updater ===\n";
-    $currentVersion = 'v1.0.5';
+    $currentVersion = 'v1.0.6';
     echo "Current Version: $currentVersion\n";
     echo "Checking for latest release on GitHub...\n";
     
@@ -112,17 +117,17 @@ if ($argc > 1 && $argv[1] === 'update') {
             closedir($dir);
         };
         
-        // 1. Copy onescript/engine/ directory
-        $srcEngine = $extractedRoot . '/onescript/engine';
-        $dstEngine = $projectRoot . '/onescript/engine';
+        // 1. Copy oneweb/engine/ directory
+        $srcEngine = $extractedRoot . '/oneweb/engine';
+        $dstEngine = $projectRoot . '/oneweb/engine';
         if (is_dir($srcEngine)) {
             $copyDir($srcEngine, $dstEngine);
             echo " - Updated core engine files.\n";
         }
         
-        // 2. Copy bin/onescript script
-        $srcBin = $extractedRoot . '/bin/onescript';
-        $dstBin = $projectRoot . '/bin/onescript';
+        // 2. Copy bin/oneweb script
+        $srcBin = $extractedRoot . '/bin/oneweb';
+        $dstBin = $projectRoot . '/bin/oneweb';
         if (file_exists($srcBin)) {
             @copy($srcBin, $dstBin);
             echo " - Updated runner script.\n";
@@ -291,20 +296,20 @@ if (!file_exists($configPath)) {
     $defaultConfigContent = <<<EOT
 @db
     driver = "sqlite"
-    database = "onescript.sqlite"
+    database = "oneweb.sqlite"
 @enddb
 EOT;
     @file_put_contents($configPath, $defaultConfigContent);
 }
 
-// 4. Auto-create onescript.sqlite database file
-$sqliteFile = $projectRoot . '/onescript.sqlite';
+// 4. Auto-create oneweb.sqlite database file
+$sqliteFile = $projectRoot . '/oneweb.sqlite';
 if (!file_exists($sqliteFile)) {
     @touch($sqliteFile);
 }
 
 echo "---------------------------------------------------------\n";
-echo " Starting OneScript Local Development Server\n";
+echo " Starting OneWeb Local Development Server\n";
 echo " URL: http://localhost:8000\n";
 echo " Document Root: $projectRoot\n";
 echo " Press Ctrl+C to stop the server\n";

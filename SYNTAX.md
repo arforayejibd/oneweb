@@ -93,7 +93,7 @@
 
 ## 7. Unified UI Components (`<one-*>`)
 
-OneScript strictly separates concerns: `@directives` for logic/data, and `<one-*>` tags for UI layout and styling (powered natively by Tailwind CSS).
+OneWeb strictly separates concerns: `@directives` for logic/data, and `<one-*>` tags for UI layout and styling (powered natively by Tailwind CSS).
 
 ### Available UI Component Tags:
 

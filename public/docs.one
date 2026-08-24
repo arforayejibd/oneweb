@@ -6,10 +6,10 @@
         <div class="mb-14 text-center max-w-4xl mx-auto">
             <one-badge variant="purple">Official Language Specification v0.2</one-badge>
             <div class="mt-4 mb-3">
-                <one-heading level="1">OneScript Enterprise Specification & Developer Guide</one-heading>
+                <one-heading level="1">OneWeb Enterprise Specification & Developer Guide</one-heading>
             </div>
             <p class="text-slate-400 text-base sm:text-lg leading-relaxed">
-                The complete developer reference manual for OneScript (<code>.one</code>) — covering architecture, directives, validation, authentication, custom developer components, and zero-code database actions.
+                The complete developer reference manual for OneWeb (<code>.one</code>) — covering architecture, directives, validation, authentication, custom developer components, and zero-code database actions.
             </p>
         </div>
 
@@ -66,12 +66,12 @@
                         <span class="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold text-base">1</span>
                         <div>
                             <one-heading level="2">Overview & Engine Architecture</one-heading>
-                            <p class="text-xs text-slate-400">Understanding OneScript execution engine and file layout</p>
+                            <p class="text-xs text-slate-400">Understanding OneWeb execution engine and file layout</p>
                         </div>
                     </div>
 
                     <p class="text-slate-300 text-sm leading-relaxed">
-                        <strong>OneScript</strong> is an HTML-first web programming language and dynamic template engine. Designed with the core philosophy of zero backend boilerplate, OneScript allows developers to write pure <code>.one</code> template files containing standard HTML5, block directives (<code>&#64;query</code>, <code>&#64;auth</code>, <code>&#64;foreach</code>), and custom engine component tags (<code>&lt;one-card&gt;</code>, <code>&lt;product-card&gt;</code>).
+                        <strong>OneWeb</strong> is an HTML-first web programming language and dynamic template engine. Designed with the core philosophy of zero backend boilerplate, OneWeb allows developers to write pure <code>.one</code> template files containing standard HTML5, block directives (<code>&#64;query</code>, <code>&#64;auth</code>, <code>&#64;foreach</code>), and custom engine component tags (<code>&lt;one-card&gt;</code>, <code>&lt;product-card&gt;</code>).
                     </p>
 
                     <div class="space-y-3">
@@ -79,13 +79,13 @@
                             <i class="fa-solid fa-folder-tree text-indigo-400"></i> 1.1 Project Directory Structure
                         </h4>
                         <div class="bg-[#070a12] text-slate-300 rounded-2xl p-5 font-mono text-xs shadow-inner border border-slate-800 leading-relaxed">
-                            onescript/<br>
+                            oneweb/<br>
                             ├── public/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;-- Developer template files (.one)<br>
                             │ &nbsp;&nbsp;├── index.one &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;-- Home view (http://example.com/)<br>
                             │ &nbsp;&nbsp;├── products.one &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;-- Catalog view (http://example.com/products)<br>
                             │ &nbsp;&nbsp;├── components/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;-- Custom Developer Components (product-card.one)<br>
                             │ &nbsp;&nbsp;└── includes/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;-- Reusable template partials (header.one, footer.one)<br>
-                            ├── onescript/engine/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;-- Core OneScript Engine (Lexer, Parser, Renderer)<br>
+                            ├── oneweb/engine/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;-- Core OneWeb Engine (Lexer, Parser, Renderer)<br>
                             └── db.json &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;-- Database configuration file (Optional)
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                     </div>
 
                     <p class="text-slate-300 text-sm leading-relaxed">
-                        OneScript includes native authentication directives. Use <code>&#64;auth</code> to display content exclusively to logged-in users and <code>&#64;guest</code> for visitors:
+                        OneWeb includes native authentication directives. Use <code>&#64;auth</code> to display content exclusively to logged-in users and <code>&#64;guest</code> for visitors:
                     </p>
 
                     <div class="bg-[#070a12] text-slate-300 rounded-2xl p-5 font-mono text-xs shadow-inner border border-slate-800">
@@ -235,7 +235,7 @@
                         <span class="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold text-base">7</span>
                         <div>
                             <one-heading level="2">Complete Application Code Example</one-heading>
-                            <p class="text-xs text-slate-400">Full 1-file production store application written in OneScript</p>
+                            <p class="text-xs text-slate-400">Full 1-file production store application written in OneWeb</p>
                         </div>
                     </div>
 

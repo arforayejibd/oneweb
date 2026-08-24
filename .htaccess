@@ -11,5 +11,5 @@
     # Route all HTTP requests to public/ or engine/boot.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ onescript/engine/boot.php [QSA,L]
+    RewriteRule ^(.*)$ oneweb/engine/boot.php [QSA,L]
 </IfModule>

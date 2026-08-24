@@ -5,12 +5,12 @@
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
             <div>
                 <one-heading level="1">Product Showcase Application</one-heading>
-                <p class="text-slate-400 text-sm">Demonstrating OneScript dynamic <code>@query</code>, <code>@foreach</code>, and zero-code <code>@insert</code> / <code>@delete</code> database operations.</p>
+                <p class="text-slate-400 text-sm">Demonstrating OneWeb dynamic <code>@query</code>, <code>@foreach</code>, and zero-code <code>@insert</code> / <code>@delete</code> database operations.</p>
             </div>
             <one-badge variant="purple">Live Storefront Demo</one-badge>
         </div>
 
-        <!-- Add New Product Form using OneScript @insert -->
+        <!-- Add New Product Form using OneWeb @insert -->
         <div class="glass-card rounded-3xl p-8 mb-14 border border-slate-800 shadow-2xl">
             <div class="max-w-2xl mb-6">
                 <one-heading level="3">Add New Product (@insert="products")</one-heading>
@@ -32,11 +32,11 @@
             </form>
         </div>
 
-        <!-- Fetch & Display Products using OneScript @query & @foreach -->
+        <!-- Fetch & Display Products using OneWeb @query & @foreach -->
         <div class="mb-8 flex items-center justify-between border-t border-slate-800/80 pt-10">
             <div>
                 <one-heading level="2">Available Catalog (@query products)</one-heading>
-                <p class="text-slate-400 text-xs">Real-time database feed rendered by OneScript engine</p>
+                <p class="text-slate-400 text-xs">Real-time database feed rendered by OneWeb engine</p>
             </div>
             <one-badge variant="info">Live Feed</one-badge>
         </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace OneScript\Engine;
+namespace OneWeb\Engine;
 
 class Renderer {
     private string $viewsDir;
@@ -122,23 +122,23 @@ class Renderer {
                     $signature = FormHandler::generateSignature($actionType, $table, $where);
 
                     $html .= "<form method=\"POST\" action=\"\" {$extra}>\n";
-                    $html .= "  <input type=\"hidden\" name=\"_onescript_action\" value=\"" . htmlspecialchars($actionType) . "\">\n";
-                    $html .= "  <input type=\"hidden\" name=\"_onescript_table\" value=\"" . htmlspecialchars($table) . "\">\n";
+                    $html .= "  <input type=\"hidden\" name=\"_oneweb_action\" value=\"" . htmlspecialchars($actionType) . "\">\n";
+                    $html .= "  <input type=\"hidden\" name=\"_oneweb_table\" value=\"" . htmlspecialchars($table) . "\">\n";
                     if ($where !== '') {
-                        $html .= "  <input type=\"hidden\" name=\"_onescript_where\" value=\"" . htmlspecialchars($where) . "\">\n";
+                        $html .= "  <input type=\"hidden\" name=\"_oneweb_where\" value=\"" . htmlspecialchars($where) . "\">\n";
                     }
                     if ($validate !== '') {
-                        $html .= "  <input type=\"hidden\" name=\"_onescript_validate\" value=\"" . htmlspecialchars($validate) . "\">\n";
+                        $html .= "  <input type=\"hidden\" name=\"_oneweb_validate\" value=\"" . htmlspecialchars($validate) . "\">\n";
                     }
-                    $html .= "  <input type=\"hidden\" name=\"_onescript_signature\" value=\"" . htmlspecialchars($signature) . "\">\n";
-                    $html .= "  <input type=\"hidden\" name=\"_onescript_redirect\" value=\"" . htmlspecialchars($redirect) . "\">\n";
+                    $html .= "  <input type=\"hidden\" name=\"_oneweb_signature\" value=\"" . htmlspecialchars($signature) . "\">\n";
+                    $html .= "  <input type=\"hidden\" name=\"_oneweb_redirect\" value=\"" . htmlspecialchars($redirect) . "\">\n";
 
                     // Inject Flash Validation Alerts if present
-                    if (!empty($_SESSION['_onescript_flash_error'])) {
+                    if (!empty($_SESSION['_oneweb_flash_error'])) {
                         $html .= "  <div class=\"mb-4 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold\">\n";
-                        $html .= "    <i class=\"fa-solid fa-triangle-exclamation mr-2\"></i> " . htmlspecialchars($_SESSION['_onescript_flash_error']) . "\n";
+                        $html .= "    <i class=\"fa-solid fa-triangle-exclamation mr-2\"></i> " . htmlspecialchars($_SESSION['_oneweb_flash_error']) . "\n";
                         $html .= "  </div>\n";
-                        unset($_SESSION['_onescript_flash_error']);
+                        unset($_SESSION['_oneweb_flash_error']);
                     }
                     break;
 

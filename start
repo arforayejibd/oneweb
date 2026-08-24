@@ -1,7 +1,7 @@
 #!/bin/sh
 if [ "$1" = "one" ]; then
     shift
-    php bin/onescript "$@"
+    php bin/oneweb "$@"
 else
     echo "Usage: ./start one [args]"
 fi

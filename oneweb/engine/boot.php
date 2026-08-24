@@ -1,10 +1,10 @@
 <?php
 /**
- * OneScript Core Bootloader Engine
+ * OneWeb Core Bootloader Engine
  */
 
 spl_autoload_register(function ($class) {
-    $prefix = 'OneScript\\Engine\\';
+    $prefix = 'OneWeb\\Engine\\';
     $baseDir = __DIR__ . '/';
 
     $len = strlen($prefix);
@@ -20,10 +20,10 @@ spl_autoload_register(function ($class) {
     }
 });
 
-use OneScript\Engine\OneScript;
-use OneScript\Engine\Database;
+use OneWeb\Engine\OneWeb;
+use OneWeb\Engine\Database;
 
-$rootDir = OneScript::getRootDir();
+$rootDir = OneWeb::getRootDir();
 
 // Auto-create VS Code settings for HTML association
 $vscodeDir = $rootDir . '/.vscode';
@@ -77,13 +77,13 @@ EOT;
 
 $dbConfig = Database::loadConfigFromOneFile();
 
-OneScript::boot([
+OneWeb::boot([
     'db' => $dbConfig,
     'views_dir' => $rootDir . '/public',
     'debug' => true
 ]);
 
-if (defined('ONESCRIPT_NO_AUTO_RENDER')) {
+if (defined('ONEWEB_NO_AUTO_RENDER')) {
     return;
 }
 
@@ -91,7 +91,7 @@ $requestUri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 $path = ltrim($requestUri, '/');
 
 // Security Shield: Block direct access to internal partials, db.json, or engine files
-if (preg_match('/^(includes\/|onescript\/|\.env|db\.json|\.git)/i', $path)) {
+if (preg_match('/^(includes\/|oneweb\/|\.env|db\.json|\.git)/i', $path)) {
     header("HTTP/1.1 404 Not Found");
     echo "<div style='font-family:sans-serif; background:#090d16; color:#f43f5e; padding:4rem; text-align:center;'>
         <h2 style='font-size:2rem; font-weight:bold;'>404 Not Found</h2>
@@ -151,5 +151,5 @@ foreach ($routeCandidates as $candidate) {
     }
 }
 
-$output = \OneScript\Engine\OneScript::render($targetView);
+$output = \OneWeb\Engine\OneWeb::render($targetView);
 echo $output;

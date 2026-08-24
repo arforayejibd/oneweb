@@ -1,6 +1,6 @@
 <?php
 
-namespace OneScript\Engine;
+namespace OneWeb\Engine;
 
 use PDO;
 use PDOException;
@@ -17,7 +17,7 @@ class Database {
         $driver = $config['driver'] ?? 'mysql';
         $host = $config['host'] ?? '127.0.0.1';
         $port = $config['port'] ?? 3306;
-        $dbname = $config['dbname'] ?? 'onescript_db';
+        $dbname = $config['dbname'] ?? 'oneweb_db';
         $user = $config['username'] ?? 'root';
         $pass = $config['password'] ?? '';
         $charset = $config['charset'] ?? 'utf8mb4';
@@ -43,7 +43,7 @@ class Database {
                 self::$driver = 'mysql';
             } catch (PDOException $e) {
                 // Fallback to SQLite file DB if MySQL is offline or unconfigured locally
-                $sqliteFile = OneScript::getRootDir() . '/onescript.sqlite';
+                $sqliteFile = OneWeb::getRootDir() . '/oneweb.sqlite';
                 if (!file_exists($sqliteFile)) {
                     @touch($sqliteFile);
                 }
@@ -54,7 +54,7 @@ class Database {
                 self::$driver = 'sqlite';
             }
         } else {
-            $sqliteFile = OneScript::getRootDir() . '/onescript.sqlite';
+            $sqliteFile = OneWeb::getRootDir() . '/oneweb.sqlite';
             if (!file_exists($sqliteFile)) {
                 @touch($sqliteFile);
             }
@@ -74,12 +74,12 @@ class Database {
     }
 
     public static function loadConfigFromOneFile(): array {
-        $configPath = OneScript::getRootDir() . '/config.one';
+        $configPath = OneWeb::getRootDir() . '/config.one';
         if (!file_exists($configPath)) {
             $defaultConfigContent = <<<EOT
 @db
     driver = "sqlite"
-    database = "onescript.sqlite"
+    database = "oneweb.sqlite"
 @enddb
 EOT;
             @file_put_contents($configPath, $defaultConfigContent);
@@ -88,14 +88,14 @@ EOT;
             'driver'      => 'mysql',
             'host'        => '127.0.0.1',
             'port'        => 3306,
-            'dbname'      => 'onescript_db',
+            'dbname'      => 'oneweb_db',
             'username'    => 'root',
             'password'    => '',
             'charset'     => 'utf8mb4',
-            'name'        => 'OneScript Portal',
+            'name'        => 'OneWeb Portal',
             'env'         => 'development',
             'debug'       => true,
-            'url'         => 'http://onescript.test',
+            'url'         => 'http://oneweb.test',
             'timezone'    => 'Asia/Dhaka',
             'enabled'     => true,
             'lifetime'    => 3600,
@@ -175,9 +175,9 @@ EOT;
         $stmt = $pdo->query("SELECT COUNT(*) FROM products");
         if ($stmt->fetchColumn() == 0) {
             $pdo->exec("INSERT INTO products (name, category, price, description) VALUES 
-                ('OneScript Pro Theme', 'Template', 1500.00, 'Modern clean responsive UI template built with OneScript.'),
+                ('OneWeb Pro Theme', 'Template', 1500.00, 'Modern clean responsive UI template built with OneWeb.'),
                 ('E-commerce Suite', 'Software', 4500.00, 'Complete dynamic store management system.'),
-                ('Hosting Package', 'Service', 1200.00, 'Super fast cPanel shared web hosting for OneScript sites.')
+                ('Hosting Package', 'Service', 1200.00, 'Super fast cPanel shared web hosting for OneWeb sites.')
             ");
         }
     }

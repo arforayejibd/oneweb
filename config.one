@@ -1,4 +1,4 @@
-# OneScript Master Configuration File (.one)
+# OneWeb Master Configuration File (.one)
 
 # ------------------------------------------------------------------
 # 1. Database Configuration (@db ... @enddb)
@@ -7,7 +7,7 @@
     driver   = "mysql"
     host     = "127.0.0.1"
     port     = 3306
-    dbname   = "onescript_db"
+    dbname   = "oneweb_db"
     username = "root"
     password = ""
     charset  = "utf8mb4"
@@ -17,10 +17,10 @@
 # 2. Application Global Settings (@app ... @endapp)
 # ------------------------------------------------------------------
 @app
-    name     = "OneScript Official Web Portal"
+    name     = "OneWeb Official Web Portal"
     env      = "development"
     debug    = true
-    url      = "http://onescript.test"
+    url      = "http://oneweb.test"
     timezone = "Asia/Dhaka"
 @endapp
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace OneScript\Engine;
+namespace OneWeb\Engine;
 
 class FormHandler {
     public static function handlePostRequest(): void {
@@ -8,12 +8,12 @@ class FormHandler {
             return;
         }
 
-        $action = $_POST['_onescript_action'] ?? null;
-        $table  = $_POST['_onescript_table'] ?? null;
-        $where  = $_POST['_onescript_where'] ?? null;
-        $validate = $_POST['_onescript_validate'] ?? null;
-        $signature = $_POST['_onescript_signature'] ?? null;
-        $redirect = $_POST['_onescript_redirect'] ?? ($_SERVER['HTTP_REFERER'] ?? '/');
+        $action = $_POST['_oneweb_action'] ?? null;
+        $table  = $_POST['_oneweb_table'] ?? null;
+        $where  = $_POST['_oneweb_where'] ?? null;
+        $validate = $_POST['_oneweb_validate'] ?? null;
+        $signature = $_POST['_oneweb_signature'] ?? null;
+        $redirect = $_POST['_oneweb_redirect'] ?? ($_SERVER['HTTP_REFERER'] ?? '/');
 
         if (!$action || !$table) {
             return;
@@ -30,10 +30,10 @@ class FormHandler {
             exit;
         }
 
-        // Clean user payload (exclude onescript control fields)
+        // Clean user payload (exclude oneweb control fields)
         $data = [];
         foreach ($_POST as $key => $value) {
-            if (strpos($key, '_onescript_') !== 0) {
+            if (strpos($key, '_oneweb_') !== 0) {
                 $data[$key] = is_string($value) ? trim($value) : $value;
             }
         }
@@ -45,7 +45,7 @@ class FormHandler {
                 if (session_status() === PHP_SESSION_NONE) {
                     @session_start();
                 }
-                $_SESSION['_onescript_flash_error'] = $valError;
+                $_SESSION['_oneweb_flash_error'] = $valError;
                 $redirect = preg_replace('/\.one$/i', '', $redirect);
                 if ($redirect === '/index') $redirect = '/';
                 header("Location: " . $redirect);
@@ -128,9 +128,9 @@ class FormHandler {
         if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
             @session_start();
         }
-        if (empty($_SESSION['_onescript_secret'])) {
-            $_SESSION['_onescript_secret'] = bin2hex(random_bytes(32));
+        if (empty($_SESSION['_oneweb_secret'])) {
+            $_SESSION['_oneweb_secret'] = bin2hex(random_bytes(32));
         }
-        return $_SESSION['_onescript_secret'];
+        return $_SESSION['_oneweb_secret'];
     }
 }

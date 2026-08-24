@@ -1,7 +1,7 @@
 @echo off
 if "%1"=="one" (
     shift
-    php bin/onescript %1 %2 %3 %4 %5 %6 %7 %8 %9
+    php bin/oneweb %1 %2 %3 %4 %5 %6 %7 %8 %9
 ) else (
     echo Usage: start one [args]
 )
