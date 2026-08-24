@@ -1,6 +1,6 @@
-# OneWeb - HTML-First PHP Template Engine & Micro-Framework (v1.0.4)
+# OneWeb - HTML-First PHP Template Engine & Micro-Framework (v1.0.5)
 
-[![Version](https://img.shields.io/badge/version-v1.0.4-blue.svg)](https://github.com/arforayejibd/oneweb)
+[![Version](https://img.shields.io/badge/version-v1.0.5-blue.svg)](https://github.com/arforayejibd/oneweb)
 [![Latest Stable Version](https://img.shields.io/packagist/v/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
 [![Total Downloads](https://img.shields.io/packagist/dt/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
 [![License](https://img.shields.io/packagist/l/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
