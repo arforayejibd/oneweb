@@ -1,0 +1,20 @@
+{
+    "name": "arforayejibd/onescript",
+    "description": "An HTML-first template engine and micro-framework in PHP",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "CV"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "OneScript\\Engine\\": "onescript/engine/"
+        }
+    }
+}
