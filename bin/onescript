@@ -18,9 +18,153 @@ if (!file_exists($bootScript)) {
     $bootScript = $projectRoot . '/vendor/arforayejibd/oneweb/onescript/engine/boot.php';
 }
 
-if (!file_exists($bootScript)) {
-    echo "Error: OneScript bootloader not found at: $bootScript\n";
-    exit(1);
+if ($argc > 1 && $argv[1] === 'update') {
+    echo "=== OneWeb Auto-Updater ===\n";
+    $currentVersion = 'v1.0.4';
+    echo "Current Version: $currentVersion\n";
+    echo "Checking for latest release on GitHub...\n";
+    
+    $opts = [
+        'http' => [
+            'method' => 'GET',
+            'header' => [
+                'User-Agent: OneWeb-Updater'
+            ]
+        ]
+    ];
+    $context = stream_context_create($opts);
+    $apiUrl = 'https://api.github.com/repos/arforayejibd/oneweb/releases/latest';
+    $response = @file_get_contents($apiUrl, false, $context);
+    
+    if (!$response) {
+        echo "Error: Could not connect to GitHub API to check for updates.\n";
+        exit(1);
+    }
+    
+    $release = json_decode($response, true);
+    $latestVersion = $release['tag_name'] ?? null;
+    $zipUrl = $release['zipball_url'] ?? null;
+    
+    if (!$latestVersion || !$zipUrl) {
+        echo "Error: Failed to parse latest release data from GitHub.\n";
+        exit(1);
+    }
+    
+    echo "Latest Available Version: $latestVersion\n";
+    
+    if (version_compare(ltrim($latestVersion, 'v'), ltrim($currentVersion, 'v'), '<=')) {
+        echo "You are already up to date!\n";
+        exit(0);
+    }
+    
+    echo "New version found! Downloading update package...\n";
+    $tempZip = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'oneweb_update_' . uniqid() . '.zip';
+    
+    $zipContent = @file_get_contents($zipUrl, false, $context);
+    if (!$zipContent) {
+        echo "Error: Failed to download update package zip.\n";
+        exit(1);
+    }
+    
+    if (@file_put_contents($tempZip, $zipContent) === false) {
+        echo "Error: Failed to save temporary update file.\n";
+        exit(1);
+    }
+    
+    echo "Extracting files...\n";
+    if (!class_exists('ZipArchive')) {
+        echo "Error: ZipArchive extension is not enabled in your PHP installation. Please update manually.\n";
+        @unlink($tempZip);
+        exit(1);
+    }
+    
+    $zip = new ZipArchive;
+    if ($zip->open($tempZip) === TRUE) {
+        $tempExtractDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'oneweb_extracted_' . uniqid();
+        @mkdir($tempExtractDir, 0777, true);
+        $zip->extractTo($tempExtractDir);
+        $zip->close();
+        
+        $dirs = glob($tempExtractDir . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
+        if (empty($dirs)) {
+            echo "Error: Failed to locate extracted update directory.\n";
+            @unlink($tempZip);
+            exit(1);
+        }
+        $extractedRoot = $dirs[0];
+        
+        echo "Applying updates to engine components...\n";
+        
+        $copyDir = function($src, $dst) use (&$copyDir) {
+            if (!is_dir($dst)) {
+                @mkdir($dst, 0777, true);
+            }
+            $dir = opendir($src);
+            while (false !== ($file = readdir($dir))) {
+                if (($file != '.') && ($file != '..')) {
+                    if (is_dir($src . '/' . $file)) {
+                        $copyDir($src . '/' . $file, $dst . '/' . $file);
+                    } else {
+                        @copy($src . '/' . $file, $dst . '/' . $file);
+                    }
+                }
+            }
+            closedir($dir);
+        };
+        
+        // 1. Copy onescript/engine/ directory
+        $srcEngine = $extractedRoot . '/onescript/engine';
+        $dstEngine = $projectRoot . '/onescript/engine';
+        if (is_dir($srcEngine)) {
+            $copyDir($srcEngine, $dstEngine);
+            echo " - Updated core engine files.\n";
+        }
+        
+        // 2. Copy bin/onescript script
+        $srcBin = $extractedRoot . '/bin/onescript';
+        $dstBin = $projectRoot . '/bin/onescript';
+        if (file_exists($srcBin)) {
+            @copy($srcBin, $dstBin);
+            echo " - Updated runner script.\n";
+        }
+        
+        // 3. Copy shortcuts in project root
+        $shortcuts = ['one', 'one.bat', 'run', 'run.bat', 'start', 'start.bat'];
+        foreach ($shortcuts as $sc) {
+            $srcSc = $extractedRoot . '/' . $sc;
+            $dstSc = $projectRoot . '/' . $sc;
+            if (file_exists($srcSc)) {
+                @copy($srcSc, $dstSc);
+            }
+        }
+        echo " - Updated shortcut scripts.\n";
+        
+        // Clean up
+        $removeDir = function($dir) use (&$removeDir) {
+            if (is_dir($dir)) {
+                $objects = scandir($dir);
+                foreach ($objects as $object) {
+                    if ($object != "." && $object != "..") {
+                        if (is_dir($dir . DIRECTORY_SEPARATOR . $object) && !is_link($dir . DIRECTORY_SEPARATOR . $object)) {
+                            $removeDir($dir . DIRECTORY_SEPARATOR . $object);
+                        } else {
+                            unlink($dir . DIRECTORY_SEPARATOR . $object);
+                        }
+                    }
+                }
+                rmdir($dir);
+            }
+        };
+        $removeDir($tempExtractDir);
+        @unlink($tempZip);
+        
+        echo "\nOneWeb framework updated successfully!\n";
+        exit(0);
+    } else {
+        echo "Error: Failed to open update zip file.\n";
+        @unlink($tempZip);
+        exit(1);
+    }
 }
 
 // 1. Auto-configure VS Code global settings for HTML association

@@ -1,6 +1,6 @@
-# OneWeb - HTML-First PHP Template Engine & Micro-Framework (v1.0.3)
+# OneWeb - HTML-First PHP Template Engine & Micro-Framework (v1.0.4)
 
-[![Version](https://img.shields.io/badge/version-v1.0.3-blue.svg)](https://github.com/arforayejibd/oneweb)
+[![Version](https://img.shields.io/badge/version-v1.0.4-blue.svg)](https://github.com/arforayejibd/oneweb)
 [![Latest Stable Version](https://img.shields.io/packagist/v/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
 [![Total Downloads](https://img.shields.io/packagist/dt/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
 [![License](https://img.shields.io/packagist/l/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
@@ -50,6 +50,18 @@ This command will automatically:
 - Create a `public/` directory with a default `index.one` homepage if it doesn't exist.
 - Configure `.vscode/settings.json` to enable HTML syntax highlighting for `*.one` templates in VS Code.
 - Generate your database configuration `config.one` and the SQLite database `onescript.sqlite` in the project root.
+
+### 3. Update the Framework
+To easily update the core framework files (engine and CLI runners) to the latest version, run one of the following commands:
+
+**Cross-platform (recommended):**
+```bash
+composer run one update
+```
+
+**Or using shortcuts:**
+- **Windows:** `run one update` (or `start one update`)
+- **macOS/Linux:** `./run one update` (or `./start one update`)
 
 ---
 

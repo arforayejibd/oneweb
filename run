@@ -1,6 +1,7 @@
 #!/bin/sh
 if [ "$1" = "one" ]; then
-    php bin/onescript
+    shift
+    php bin/onescript "$@"
 else
-    echo "Usage: ./run one"
+    echo "Usage: ./run one [args]"
 fi
