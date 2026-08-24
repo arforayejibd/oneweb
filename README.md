@@ -22,25 +22,28 @@
 
 ## Installation
 
-### 1. Require the Package
-In your project root, require the package via Composer:
+### 1. Create a New Project
+Run the following command to download the framework skeleton and set up your project directory:
 
 ```bash
-composer require arforayejibd/oneweb
+composer create-project arforayejibd/oneweb my-project
 ```
 
+*(Replace `my-project` with your desired folder name)*
+
 ### 2. Start the Local Server
-Run this single command to start your development server:
+Change into your project directory and start the local development server:
 
 ```bash
-php vendor/bin/onescript
+cd my-project
+php bin/onescript
 ```
 
 This command will automatically:
 - Start the server at **`http://localhost:8000`**
 - Create a `public/` directory with a default `index.one` homepage if it doesn't exist.
-- Configure `.vscode/settings.json` to enable HTML syntax highlighting for `*.one` templates.
-- Generate `config.one` and the `onescript.sqlite` database in your project root.
+- Configure `.vscode/settings.json` to enable HTML syntax highlighting for `*.one` templates in VS Code.
+- Generate your database configuration `config.one` and the SQLite database `onescript.sqlite` in the project root.
 
 ---
 

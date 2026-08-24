@@ -1,7 +1,7 @@
 {
     "name": "arforayejibd/oneweb",
     "description": "An HTML-first template engine and micro-framework in PHP",
-    "type": "library",
+    "type": "project",
     "license": "MIT",
     "authors": [
         {
