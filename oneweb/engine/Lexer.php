@@ -82,10 +82,26 @@ class Lexer {
                     continue;
                 }
 
+                // @query <variable> from <table_name> [where ...] [order by ...] [limit ...]
+                if (preg_match('/^@query\s+([a-zA-Z0-9_]+)\s+from\s+([a-zA-Z0-9_]+)(?:\s+where\s+(.+?))?(?:\s+order\s+by\s+([a-zA-Z0-9_\s,]+))?(?:\s+limit\s+([0-9]+))?\s*(?:\r?\n|$)/i', $rest, $m)) {
+                    $tokens[] = [
+                        'type' => 'T_QUERY_START',
+                        'variable' => $m[1],
+                        'table' => $m[2],
+                        'where' => !empty($m[3]) ? trim($m[3]) : null,
+                        'orderBy' => !empty($m[4]) ? trim($m[4]) : null,
+                        'limit' => !empty($m[5]) ? (int)$m[5] : null,
+                        'raw' => $m[0]
+                    ];
+                    $cursor += strlen($m[0]);
+                    continue;
+                }
+
                 // @query <table_name> [where ...] [order by ...] [limit ...]
                 if (preg_match('/^@query\s+([a-zA-Z0-9_]+)(?:\s+where\s+(.+?))?(?:\s+order\s+by\s+([a-zA-Z0-9_\s,]+))?(?:\s+limit\s+([0-9]+))?\s*(?:\r?\n|$)/i', $rest, $m)) {
                     $tokens[] = [
                         'type' => 'T_QUERY_START',
+                        'variable' => $m[1],
                         'table' => $m[1],
                         'where' => !empty($m[2]) ? trim($m[2]) : null,
                         'orderBy' => !empty($m[3]) ? trim($m[3]) : null,
@@ -217,6 +233,32 @@ class Lexer {
                     continue;
                 }
 
+                // <form @login="table" [validate="rules"] [redirect="url"] ...>
+                if (preg_match('/^<form\s+@login=["\']([^"\']+)["\'](?:\s+validate=["\']([^"\']+)["\'])?(?:\s+redirect=["\']([^"\']+)["\'])?([^>]*)>/i', $rest, $m)) {
+                    $tokens[] = [
+                        'type' => 'T_FORM_LOGIN',
+                        'table' => $m[1],
+                        'validate' => !empty($m[2]) ? $m[2] : null,
+                        'redirect' => !empty($m[3]) ? $m[3] : null,
+                        'extra' => $m[4],
+                        'raw' => $m[0]
+                    ];
+                    $cursor += strlen($m[0]);
+                    continue;
+                }
+
+                // <form @logout [redirect="url"] ...>
+                if (preg_match('/^<(?:form|button)\s+@logout(?:\s+redirect=["\']([^"\']+)["\'])?([^>]*)>/i', $rest, $m)) {
+                    $tokens[] = [
+                        'type' => 'T_FORM_LOGOUT',
+                        'redirect' => !empty($m[1]) ? $m[1] : null,
+                        'extra' => $m[2],
+                        'raw' => $m[0]
+                    ];
+                    $cursor += strlen($m[0]);
+                    continue;
+                }
+
                 // <form @update="table" where="clause" [validate="rules"] [redirect="url"] ...>
                 if (preg_match('/^<form\s+@update=["\']([^"\']+)["\'](?:\s+where=["\']([^"\']+)["\'])?(?:\s+validate=["\']([^"\']+)["\'])?(?:\s+redirect=["\']([^"\']+)["\'])?([^>]*)>/i', $rest, $m)) {
                     $tokens[] = [
@@ -263,7 +305,7 @@ class Lexer {
             }
 
             $nextFormDirective = false;
-            if (preg_match('/<(?:form|button)\s+@(insert|update|delete)/i', $source, $m, PREG_OFFSET_CAPTURE, $cursor)) {
+            if (preg_match('/<(?:form|button)\s+@(insert|update|delete|login|logout)/i', $source, $m, PREG_OFFSET_CAPTURE, $cursor)) {
                 $nextFormDirective = $m[0][1];
             }
             if ($nextFormDirective !== false && $nextFormDirective < $nextSpecial) {

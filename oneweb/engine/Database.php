@@ -65,7 +65,6 @@ class Database {
             self::$driver = 'sqlite';
         }
 
-        self::ensureDefaultTables();
         return self::$pdo;
     }
 
@@ -127,60 +126,7 @@ EOT;
         return self::$pdo;
     }
 
-    private static function ensureDefaultTables(): void {
-        $pdo = self::$pdo;
-        if (self::$driver === 'mysql') {
-            $pdo->exec("
-                CREATE TABLE IF NOT EXISTS `products` (
-                    `id` INT AUTO_INCREMENT PRIMARY KEY,
-                    `name` VARCHAR(255) NOT NULL,
-                    `category` VARCHAR(100) DEFAULT 'General',
-                    `price` DECIMAL(10,2) DEFAULT 0.00,
-                    `description` TEXT,
-                    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-            ");
-            $pdo->exec("
-                CREATE TABLE IF NOT EXISTS `contacts` (
-                    `id` INT AUTO_INCREMENT PRIMARY KEY,
-                    `name` VARCHAR(255) NOT NULL,
-                    `email` VARCHAR(255) NOT NULL,
-                    `message` TEXT,
-                    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-            ");
-        } else {
-            $pdo->exec("
-                CREATE TABLE IF NOT EXISTS products (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name TEXT NOT NULL,
-                    category TEXT DEFAULT 'General',
-                    price REAL DEFAULT 0.00,
-                    description TEXT,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-                );
-            ");
-            $pdo->exec("
-                CREATE TABLE IF NOT EXISTS contacts (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name TEXT NOT NULL,
-                    email TEXT NOT NULL,
-                    message TEXT,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-                );
-            ");
-        }
 
-        // Insert sample products if empty
-        $stmt = $pdo->query("SELECT COUNT(*) FROM products");
-        if ($stmt->fetchColumn() == 0) {
-            $pdo->exec("INSERT INTO products (name, category, price, description) VALUES 
-                ('OneWeb Pro Theme', 'Template', 1500.00, 'Modern clean responsive UI template built with OneWeb.'),
-                ('E-commerce Suite', 'Software', 4500.00, 'Complete dynamic store management system.'),
-                ('Hosting Package', 'Service', 1200.00, 'Super fast cPanel shared web hosting for OneWeb sites.')
-            ");
-        }
-    }
 
     public static function query(string $table, ?string $where = null, ?string $orderBy = null, ?int $limit = null, ?int $offset = null, bool $first = false): array|object|null {
         $pdo = self::getPdo();

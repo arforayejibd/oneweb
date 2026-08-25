@@ -62,11 +62,12 @@ class Renderer {
                     break;
 
                 case 'QueryNode':
+                    $variable = $node['variable'] ?? $node['table'];
                     $table = $node['table'];
                     $whereEvaluated = !empty($node['where']) ? $this->evaluateStringWithContext($node['where'], $context) : null;
                     $records = Database::query($table, $whereEvaluated, $node['orderBy'], $node['limit']);
                     
-                    $context[$table] = $records;
+                    $context[$variable] = $records;
 
                     if (!empty($node['children'])) {
                         $html .= $this->renderNodes($node['children'], $context);
@@ -123,7 +124,9 @@ class Renderer {
 
                     $html .= "<form method=\"POST\" action=\"\" {$extra}>\n";
                     $html .= "  <input type=\"hidden\" name=\"_oneweb_action\" value=\"" . htmlspecialchars($actionType) . "\">\n";
-                    $html .= "  <input type=\"hidden\" name=\"_oneweb_table\" value=\"" . htmlspecialchars($table) . "\">\n";
+                    if ($table !== '') {
+                        $html .= "  <input type=\"hidden\" name=\"_oneweb_table\" value=\"" . htmlspecialchars($table) . "\">\n";
+                    }
                     if ($where !== '') {
                         $html .= "  <input type=\"hidden\" name=\"_oneweb_where\" value=\"" . htmlspecialchars($where) . "\">\n";
                     }

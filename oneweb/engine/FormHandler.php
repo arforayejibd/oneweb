@@ -9,13 +9,13 @@ class FormHandler {
         }
 
         $action = $_POST['_oneweb_action'] ?? null;
-        $table  = $_POST['_oneweb_table'] ?? null;
+        $table  = $_POST['_oneweb_table'] ?? '';
         $where  = $_POST['_oneweb_where'] ?? null;
         $validate = $_POST['_oneweb_validate'] ?? null;
         $signature = $_POST['_oneweb_signature'] ?? null;
         $redirect = $_POST['_oneweb_redirect'] ?? ($_SERVER['HTTP_REFERER'] ?? '/');
 
-        if (!$action || !$table) {
+        if (!$action || (strtolower($action) !== 'logout' && !$table)) {
             return;
         }
 
@@ -39,7 +39,7 @@ class FormHandler {
         }
 
         // Run validation engine if validate attribute is present
-        if (!empty($validate) && strtolower($action) !== 'delete') {
+        if (!empty($validate) && !in_array(strtolower($action), ['delete', 'logout'])) {
             $valError = self::validatePayload($data, $validate);
             if ($valError !== null) {
                 if (session_status() === PHP_SESSION_NONE) {
@@ -68,6 +68,14 @@ class FormHandler {
                 if (!empty($where)) {
                     Database::delete($table, $where);
                 }
+                break;
+
+            case 'login':
+                self::handleLoginAction($table, $data);
+                break;
+
+            case 'logout':
+                self::handleLogoutAction();
                 break;
         }
 
@@ -132,5 +140,58 @@ class FormHandler {
             $_SESSION['_oneweb_secret'] = bin2hex(random_bytes(32));
         }
         return $_SESSION['_oneweb_secret'];
+    }
+
+    private static function handleLoginAction(string $table, array $data): void {
+        if (session_status() === PHP_SESSION_NONE) {
+            @session_start();
+        }
+
+        $username = $data['username'] ?? $data['email'] ?? null;
+        $password = $data['password'] ?? null;
+
+        if (!$username || !$password) {
+            $_SESSION['_oneweb_flash_error'] = "Username and password are required.";
+            return;
+        }
+
+        $pdo = Database::getPdo();
+        $tableClean = preg_replace('/[^a-zA-Z0-9_]/', '', $table);
+
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM `{$tableClean}` WHERE `username` = :u OR `email` = :u LIMIT 1");
+            $stmt->execute([':u' => $username]);
+            $user = $stmt->fetch();
+        } catch (\PDOException $e) {
+            $_SESSION['_oneweb_flash_error'] = "Authentication table or database schema error.";
+            return;
+        }
+
+        if (!$user) {
+            $_SESSION['_oneweb_flash_error'] = "Invalid credentials.";
+            return;
+        }
+
+        $passwordField = $user['password'] ?? $user['password_hash'] ?? null;
+        if (!$passwordField) {
+            $_SESSION['_oneweb_flash_error'] = "Password configuration missing in users table.";
+            return;
+        }
+
+        $verified = password_verify($password, $passwordField) || ($password === $passwordField);
+
+        if ($verified) {
+            $_SESSION['user'] = $user;
+        } else {
+            $_SESSION['_oneweb_flash_error'] = "Invalid credentials.";
+        }
+    }
+
+    private static function handleLogoutAction(): void {
+        if (session_status() === PHP_SESSION_NONE) {
+            @session_start();
+        }
+        unset($_SESSION['user']);
+        @session_destroy();
     }
 }

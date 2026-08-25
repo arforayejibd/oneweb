@@ -84,6 +84,7 @@ class Parser {
                     }
                     $nodes[] = [
                         'type' => 'QueryNode',
+                        'variable' => $token['variable'] ?? $token['table'],
                         'table' => $token['table'],
                         'where' => $token['where'] ?? null,
                         'orderBy' => $token['orderBy'] ?? null,
@@ -166,6 +167,30 @@ class Parser {
                         'table' => $token['table'],
                         'where' => $token['where'] ?? null,
                         'validate' => $token['validate'] ?? null,
+                        'redirect' => $token['redirect'] ?? null,
+                        'extra' => $token['extra'] ?? ''
+                    ];
+                    break;
+
+                case 'T_FORM_LOGIN':
+                    $nodes[] = [
+                        'type' => 'FormNode',
+                        'actionType' => 'login',
+                        'table' => $token['table'],
+                        'where' => null,
+                        'validate' => $token['validate'] ?? null,
+                        'redirect' => $token['redirect'] ?? null,
+                        'extra' => $token['extra'] ?? ''
+                    ];
+                    break;
+
+                case 'T_FORM_LOGOUT':
+                    $nodes[] = [
+                        'type' => 'FormNode',
+                        'actionType' => 'logout',
+                        'table' => '',
+                        'where' => null,
+                        'validate' => null,
                         'redirect' => $token['redirect'] ?? null,
                         'extra' => $token['extra'] ?? ''
                     ];

@@ -1,6 +1,6 @@
-# OneWeb - HTML-First PHP Template Engine & Micro-Framework (v1.0.6)
+# OneWeb - HTML-First PHP Template Engine & Micro-Framework (v1.0.7)
 
-[![Version](https://img.shields.io/badge/version-v1.0.6-blue.svg)](https://github.com/arforayejibd/oneweb)
+[![Version](https://img.shields.io/badge/version-v1.0.7-blue.svg)](https://github.com/arforayejibd/oneweb)
 [![Latest Stable Version](https://img.shields.io/packagist/v/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
 [![Total Downloads](https://img.shields.io/packagist/dt/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
 [![License](https://img.shields.io/packagist/l/arforayejibd/oneweb.svg)](https://packagist.org/packages/arforayejibd/oneweb)
@@ -175,7 +175,40 @@ Perform safe database CRUD operations with zero server-side handler code:
 </form>
 ```
 
-### 6. Layouts & Partials (`@layout`, `@section`, `@yield`, `@include`)
+### 6. Declarative Authentication (`@login`, `@logout`, `@auth`, `@guest`)
+Authenticate users securely on the server with zero boilerplate. Define a database table containing `username` (or `email`) and a `password` column (which can contain a plain password or a `password_hash()`).
+
+#### Conditional Authentication Checks:
+Show/hide UI elements using `@auth` and `@guest` blocks:
+```html
+@guest
+    <!-- Renders only for unauthenticated sessions -->
+    <p>Please log in to continue.</p>
+@endguest
+
+@auth
+    <!-- Renders only for logged in sessions. User properties are accessible via auth.user context variable -->
+    <h1>Welcome back, {{ auth.user.username }}!</h1>
+@endauth
+```
+
+#### Declarative Authentication Forms:
+Use the `@login` and `@logout` attributes inside forms to manage server sessions:
+```html
+<!-- Secure Login Form (queries users table, checks credentials, sets $_SESSION['user'] and redirects) -->
+<form @login="users" redirect="/admin">
+    <input name="username" placeholder="Username or Email" required>
+    <input name="password" type="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+</form>
+
+<!-- Secure Logout Button (clears session and redirects) -->
+<form @logout redirect="/login">
+    <button type="submit">Logout</button>
+</form>
+```
+
+### 7. Layouts & Partials (`@layout`, `@section`, `@yield`, `@include`)
 
 #### Layout file (`layouts/main.one`):
 ```html

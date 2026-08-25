@@ -1,0 +1,311 @@
+@include "header"
+
+<one-container max-width="7xl">
+    <!-- Guest Login Screen (Server-secured via @guest) -->
+    @guest
+    <div class="min-h-[60vh] flex items-center justify-center py-12 relative z-10">
+        <div class="glass-card rounded-3xl p-8 sm:p-10 max-w-md w-full border border-slate-800 shadow-2xl space-y-6">
+            <div class="text-center">
+                <span class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-pink-500 flex items-center justify-center text-white mx-auto shadow-lg shadow-indigo-500/25 mb-4">
+                    <i class="fa-solid fa-lock text-xl"></i>
+                </span>
+                <one-heading level="2">Admin Portal</one-heading>
+                <p class="text-xs text-slate-400">Please authenticate to access dashboard controls.</p>
+            </div>
+
+            <!-- Login Form (Handled securely by OneWeb @login action) -->
+            <form @login="users" redirect="/admin" class="space-y-4">
+                <one-input name="username" label="Admin Username" placeholder="Enter username (default: admin)" required />
+                <one-input name="password" type="password" label="Admin Password" placeholder="Enter password (default: admin123)" required />
+
+                <one-button type="submit" variant="primary" class="w-full">
+                    <i class="fa-solid fa-key mr-1"></i> Authenticate (@login)
+                </one-button>
+            </form>
+        </div>
+    </div>
+    @endguest
+
+    <!-- Admin Panel Dashboard (Server-secured via @auth) -->
+    @auth
+    <div id="admin-panel" class="space-y-8 relative z-10 py-6">
+        <!-- Dashboard Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800/80 pb-6">
+            <div>
+                <one-heading level="1">Admin Dashboard</one-heading>
+                <p class="text-slate-400 text-sm">Welcome, <strong class="text-white">{{ auth.user.username }}</strong>! Manage products catalog and check customer inquiries.</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <one-badge variant="purple">Server Session Active</one-badge>
+                <form @logout redirect="/admin" class="inline">
+                    <one-button type="submit" variant="secondary">
+                        <i class="fa-solid fa-sign-out-alt mr-1"></i> Logout (@logout)
+                    </one-button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Metrics Overview Grid -->
+        <one-grid cols="3" gap="6">
+            <!-- Stat 1: Total Products -->
+            <div class="glass-card rounded-3xl p-6 sm:p-7 border border-slate-800 flex items-center gap-5">
+                <span class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl border border-indigo-500/20 shadow-inner">
+                    <i class="fa-solid fa-box-archive"></i>
+                </span>
+                <div>
+                    <div class="text-2xl font-extrabold text-white" id="products-count-stat">0</div>
+                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mt-0.5">Total Products</div>
+                </div>
+            </div>
+
+            <!-- Stat 2: Total Contact Messages -->
+            <div class="glass-card rounded-3xl p-6 sm:p-7 border border-slate-800 flex items-center gap-5">
+                <span class="w-12 h-12 rounded-2xl bg-pink-500/10 text-pink-400 flex items-center justify-center text-xl border border-pink-500/20 shadow-inner">
+                    <i class="fa-solid fa-envelope"></i>
+                </span>
+                <div>
+                    <div class="text-2xl font-extrabold text-white" id="messages-count-stat">0</div>
+                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mt-0.5">Inquiries Received</div>
+                </div>
+            </div>
+
+            <!-- Stat 3: DB Driver Details -->
+            <div class="glass-card rounded-3xl p-6 sm:p-7 border border-slate-800 flex items-center gap-5">
+                <span class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl border border-emerald-500/20 shadow-inner">
+                    <i class="fa-solid fa-database"></i>
+                </span>
+                <div>
+                    <div class="text-2xl font-extrabold text-white">SQLite Engine</div>
+                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mt-0.5">Active Database</div>
+                </div>
+            </div>
+        </one-grid>
+
+        <!-- Navigation Tabs -->
+        <div class="flex border-b border-slate-800">
+            <button onclick="switchTab('products')" id="tab-btn-products" class="px-6 py-3 text-sm font-bold border-b-2 border-indigo-500 text-indigo-400 transition-all focus:outline-none flex items-center gap-2">
+                <i class="fa-solid fa-boxes-stacked"></i> Products Catalog
+            </button>
+            <button onclick="switchTab('messages')" id="tab-btn-messages" class="px-6 py-3 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-white transition-all focus:outline-none flex items-center gap-2">
+                <i class="fa-solid fa-comments"></i> Messages & Inquiries
+            </button>
+        </div>
+
+        <!-- Tab 1: Products Catalog Manager -->
+        <div id="tab-content-products" class="space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <one-heading level="3">Product Inventory</one-heading>
+                    <p class="text-xs text-slate-400">Add, edit, or delete storefront items inside the SQLite catalog.</p>
+                </div>
+                <one-button onclick="openAddModal()" variant="primary">
+                    <i class="fa-solid fa-plus mr-1"></i> Add Product
+                </one-button>
+            </div>
+
+            <!-- Products Database Query -->
+            @query products from products order by id desc
+            @endquery
+
+            <!-- Products Table Container -->
+            <div class="glass-card rounded-3xl overflow-hidden border border-slate-800 shadow-xl">
+                <table class="w-full text-left text-sm border-collapse" id="products-table">
+                    <thead>
+                        <tr class="bg-slate-900/60 border-b border-slate-800 text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                            <th class="px-6 py-4">ID</th>
+                            <th class="px-6 py-4">Name</th>
+                            <th class="px-6 py-4">Category</th>
+                            <th class="px-6 py-4">Price</th>
+                            <th class="px-6 py-4">Description</th>
+                            <th class="px-6 py-4 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60">
+                        @foreach products as product
+                        <tr class="hover:bg-slate-900/30 transition-colors">
+                            <td class="px-6 py-4 font-mono text-slate-400 text-xs">{{ product.id }}</td>
+                            <td class="px-6 py-4 font-bold text-white">{{ product.name }}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">{{ product.category }}</span>
+                            </td>
+                            <td class="px-6 py-4 font-bold text-indigo-300">৳{{ product.price }}</td>
+                            <td class="px-6 py-4 text-slate-400 text-xs max-w-xs truncate">{{ product.description }}</td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="flex items-center justify-center gap-3">
+                                    <one-button onclick="openEditModal({{ product.id }})" variant="outline" class="px-3 py-1.5 rounded-lg text-xs">
+                                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                                    </one-button>
+                                    
+                                    <form @delete="products" where="id = {{ product.id }}" redirect="/admin" class="inline">
+                                        <button type="submit" onclick="return confirm('Are you sure you want to delete this product?');" class="inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg font-semibold text-xs transition-all duration-200 border bg-gradient-to-r from-rose-600 to-red-600 text-white border-rose-500/50 hover:from-rose-500 hover:to-red-500 shadow-rose-900/40 cursor-pointer active:scale-95">
+                                            <i class="fa-solid fa-trash-can"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab 2: Messages Manager -->
+        <div id="tab-content-messages" class="space-y-6 hidden">
+            <div>
+                <one-heading level="3">Received Messages</one-heading>
+                <p class="text-xs text-slate-400">View and moderate inquiry submissions submitted from the home screen form.</p>
+            </div>
+
+            <!-- Contacts Database Query -->
+            @query contacts from contacts order by id desc
+            @endquery
+
+            <!-- Messages Table Container -->
+            <div class="glass-card rounded-3xl overflow-hidden border border-slate-800 shadow-xl">
+                <table class="w-full text-left text-sm border-collapse" id="messages-table">
+                    <thead>
+                        <tr class="bg-slate-900/60 border-b border-slate-800 text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                            <th class="px-6 py-4">ID</th>
+                            <th class="px-6 py-4">Sender</th>
+                            <th class="px-6 py-4">Email</th>
+                            <th class="px-6 py-4">Message</th>
+                            <th class="px-6 py-4">Received At</th>
+                            <th class="px-6 py-4 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60">
+                        @foreach contacts as contact
+                        <tr class="hover:bg-slate-900/30 transition-colors">
+                            <td class="px-6 py-4 font-mono text-slate-400 text-xs">{{ contact.id }}</td>
+                            <td class="px-6 py-4 font-bold text-white">{{ contact.name }}</td>
+                            <td class="px-6 py-4 text-xs font-semibold text-indigo-300">{{ contact.email }}</td>
+                            <td class="px-6 py-4 text-slate-300 text-xs max-w-sm whitespace-pre-wrap">{{ contact.message }}</td>
+                            <td class="px-6 py-4 text-slate-400 text-xs font-mono">{{ contact.created_at }}</td>
+                            <td class="px-6 py-4 text-center">
+                                <form @delete="contacts" where="id = {{ contact.id }}" redirect="/admin" class="inline">
+                                    <button type="submit" onclick="return confirm('Are you sure you want to delete this message?');" class="inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg font-semibold text-xs transition-all duration-200 border bg-gradient-to-r from-rose-600 to-red-600 text-white border-rose-500/50 hover:from-rose-500 hover:to-red-500 shadow-rose-900/40 cursor-pointer active:scale-95">
+                                        <i class="fa-solid fa-trash-can"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @endauth
+</one-container>
+
+@auth
+<!-- Add Product Modal Drawer -->
+<div id="add-product-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl p-8 max-w-lg w-full border border-slate-800 shadow-2xl relative">
+        <button onclick="closeAddModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+            <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+        <one-heading level="3">Add New Catalog Product</one-heading>
+        <p class="text-xs text-slate-400 mb-6">Create a new storefront item record inside SQLite.</p>
+        
+        <form @insert="products" validate="name|required|min:3;price|required|numeric" redirect="/admin" class="space-y-4">
+            <one-input name="name" label="Product Name" placeholder="e.g. Wireless Headphones" required />
+            <one-input name="category" label="Category" placeholder="e.g. Electronics, Service, Software" value="General" required />
+            <one-input name="price" label="Price (৳)" placeholder="e.g. 2500" required />
+            <one-input name="description" label="Description" placeholder="Provide a short description details..." required />
+            
+            <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-800/80">
+                <one-button type="button" onclick="closeAddModal()" variant="secondary">Cancel</one-button>
+                <one-button type="submit" variant="primary">Add Item (@insert)</one-button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Product Modals Container -->
+@query products_edit from products order by id desc
+@endquery
+
+@foreach products_edit as p_edit
+<div id="edit-modal-{{ p_edit.id }}" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl p-8 max-w-lg w-full border border-slate-800 shadow-2xl relative">
+        <button onclick="closeEditModal({{ p_edit.id }})" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+            <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+        <one-heading level="3">Edit Catalog Product</one-heading>
+        <p class="text-xs text-slate-400 mb-6">Modify product properties inside the database.</p>
+        
+        <form @update="products" where="id = {{ p_edit.id }}" validate="name|required;price|required|numeric" redirect="/admin" class="space-y-4">
+            <one-input name="name" label="Product Name" value="{{ p_edit.name }}" required />
+            <one-input name="category" label="Category" value="{{ p_edit.category }}" required />
+            <one-input name="price" label="Price (৳)" value="{{ p_edit.price }}" required />
+            <one-input name="description" label="Description" value="{{ p_edit.description }}" required />
+            
+            <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-800/80">
+                <one-button type="button" onclick="closeEditModal({{ p_edit.id }})" variant="secondary">Cancel</one-button>
+                <one-button type="submit" variant="primary">Save Changes (@update)</one-button>
+            </div>
+        </form>
+    </div>
+</div>
+@endforeach
+
+<script>
+    function updateStats() {
+        const pCount = document.querySelectorAll('#products-table tbody tr').length;
+        const mCount = document.querySelectorAll('#messages-table tbody tr').length;
+
+        document.getElementById('products-count-stat').textContent = pCount;
+        document.getElementById('messages-count-stat').textContent = mCount;
+    }
+
+    // Modal Operations
+    function openAddModal() {
+        document.getElementById('add-product-modal').classList.remove('hidden');
+    }
+    function closeAddModal() {
+        document.getElementById('add-product-modal').classList.add('hidden');
+    }
+
+    function openEditModal(id) {
+        const modal = document.getElementById('edit-modal-' + id);
+        if (modal) {
+            modal.classList.remove('hidden');
+        }
+    }
+    function closeEditModal(id) {
+        const modal = document.getElementById('edit-modal-' + id);
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    }
+
+    // Tab switcher script
+    function switchTab(tab) {
+        const productsBtn = document.getElementById('tab-btn-products');
+        const messagesBtn = document.getElementById('tab-btn-messages');
+        const productsContent = document.getElementById('tab-content-products');
+        const messagesContent = document.getElementById('tab-content-messages');
+
+        if (tab === 'products') {
+            productsBtn.className = "px-6 py-3 text-sm font-bold border-b-2 border-indigo-500 text-indigo-400 transition-all focus:outline-none flex items-center gap-2";
+            messagesBtn.className = "px-6 py-3 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-white transition-all focus:outline-none flex items-center gap-2";
+            productsContent.classList.remove('hidden');
+            messagesContent.classList.add('hidden');
+        } else {
+            productsBtn.className = "px-6 py-3 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-white transition-all focus:outline-none flex items-center gap-2";
+            messagesBtn.className = "px-6 py-3 text-sm font-bold border-b-2 border-indigo-500 text-indigo-400 transition-all focus:outline-none flex items-center gap-2";
+            productsContent.classList.add('hidden');
+            messagesContent.classList.remove('hidden');
+        }
+    }
+
+    // Initialize counts on load
+    document.addEventListener('DOMContentLoaded', () => {
+        updateStats();
+    });
+</script>
+@endauth
+
+@include "footer"
